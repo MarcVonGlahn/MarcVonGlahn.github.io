@@ -1,10 +1,11 @@
 var gulp = require('gulp');
 var plumber = require('gulp-plumber');
 const uglify = require('gulp-uglify');
-const sass = require('gulp-sass');
+//const sass = require('gulp-sass');
 const wait = require('gulp-wait');
 const babel = require('gulp-babel');;
 const rename = require('gulp-rename');
+const sass = require('gulp-sass')(require('sass'));
 
 gulp.task('scripts', function() {
     return gulp.src('./js/scripts.js')

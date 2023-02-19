@@ -35,18 +35,19 @@
 
 // Define base and accent colors
 $base-color: #12355b;
-$base-color-hover: darken($base-color, 10%);
+$base-color-hover: darken($base-color, 0%);
 
 // Define background colors
 $background: #fff;
-$background-alt: #f2f2f5;
+$background-alt: #12355b;
 
 // Define border colors
-$border: #dcd9d9;
+$border: #931f1d;
 
 // Define text colors
-$heading: #374054;
-$text: #74808a;
+$heading: #12355b;
+$heading-alt: #fff;
+$text: #575757;
 
 /*
     ---------------------
@@ -471,7 +472,7 @@ footer {
     border-bottom: 1px solid $border;
 
     h2 {
-        color: $heading;
+        color: $heading-alt;
     }
 }
 
@@ -538,16 +539,16 @@ footer {
 .vtimeline-point {
     position: relative;
     display: block;
-    vertical-align: top;
+    //vertical-align: top;
     margin-bottom: 30px;
 }
 
 .vtimeline-icon {
     position: relative;
-    color: #fff;
+    color: #12355b;
     width: 50px;
     height: 50px;
-    background: $base-color;
+    background: #fff;
     border-radius: 50%;
     float: left;
     z-index: 99;
@@ -567,7 +568,7 @@ footer {
     left: 0;
     top: 10px;
     font-weight: 300;
-    color: #374054;
+    color: #fff;
 }
 
 /*
@@ -636,7 +637,7 @@ footer {
     text-align: center;
 
     h2 {
-        color: $heading;
+        color: $heading-alt;
         margin-bottom: 50px;
     }
 }
@@ -714,7 +715,7 @@ footer {
         display: inline-block;
         margin: 7px;
         padding: 5px 10px;
-        color: $heading;
+        color: #fff;
         background: darken($background-alt, 5%);
         list-style: none;
         cursor: default;
