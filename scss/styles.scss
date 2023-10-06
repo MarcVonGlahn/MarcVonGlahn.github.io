@@ -351,7 +351,7 @@ footer {
     height: 100vh;
     min-height: 500px;
     max-height: 1080px;
-    background: url(../images/lead-bg.png);
+    background: url(../images/lead-bg_02.png);
     background-size: cover;
     padding: 15px;
     overflow: hidden;
@@ -360,7 +360,7 @@ footer {
 #lead-content {
     position: absolute;
     z-index: 10;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -381,7 +381,7 @@ footer {
     h2 {
         color: lighten($base-color, 25%);
         font-weight: 500;
-        font-size: 2.25em;
+        font-size: 2em;
         margin-bottom: 15px;
     }
 }
@@ -648,7 +648,7 @@ footer {
     margin: 0 auto 30px auto;
     overflow: hidden;
     background: #fff;
-    border-radius: 4px;
+    border-radius: 12px;
 }
 
 .project-image {
