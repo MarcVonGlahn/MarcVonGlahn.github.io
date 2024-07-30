@@ -61,6 +61,7 @@
 					if ($section.length < 1)
 						return;
 
+
 				// Scrollex.
 					$section.scrollex({
 						mode: 'middle',
@@ -89,6 +90,7 @@
 								else if ($this.hasClass('active-locked'))
 									$this.removeClass('active-locked');
 
+								
 						}
 					});
 
