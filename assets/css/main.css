@@ -210,6 +210,23 @@ input, select, textarea {
 		clear: both;
 	}
 
+	/* Images */
+
+	.image-grid {
+		display: grid;
+		margin: auto;
+		place-content: center;
+		grid-template-columns: repeat(auto-fill, minmax(175px, 0fr));
+		gap: 25px;
+	}
+
+	.image-grid img {
+		width: 175px;
+		height: 175px;
+		border-radius: 15px;
+		object-fit: cover;
+	}
+
 /* Container */
 
 	.container {
