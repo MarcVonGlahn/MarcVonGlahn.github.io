@@ -1,0 +1,1 @@
+C:\Users\marcv\source\emsdk\upstream\emscripten\em++.bat -sUSE_GLFW=3 -sUSE_WEBGPU -sASYNCIFY -sALLOW_MEMORY_GROWTH --preload-file C:/Users/marcv/source/webgpu/myWebGPU-cpp-setup/resources @CMakeFiles\App.dir\objects1.rsp -o App.html @CMakeFiles\App.dir\linkLibs.rsp
