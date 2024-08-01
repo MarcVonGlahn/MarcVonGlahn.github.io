@@ -1,0 +1,3 @@
+[submodule "assets/webgpu_project/_deps/webgpu-backend-emscripten-src"] 
+  path = assets/webgpu_project/_deps/webgpu-backend-emscripten-src 
+  url = git://https://github.com/MarcVonGlahn/myWebGPU-cpp-setup
