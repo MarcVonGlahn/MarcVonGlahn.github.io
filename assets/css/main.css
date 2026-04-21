@@ -2089,6 +2089,7 @@ input, select, textarea {
 		background: #ffffff;
 		border-radius: 10px;
 		border: 2px solid #12355d;
+		padding-bottom: 15px;
 	}
 
 		.item header {
