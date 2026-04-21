@@ -79,10 +79,7 @@
 						</ul>
 
 						<h3>Technologies Used</h3>
-						<ul>
-							<li><strong>Unity 3D</strong></li>
-							<li><strong>Finite State Machines</strong></li>
-						</ul>
+						<div id="tech-rendered"></div>
 
 						<h3>Screenshots</h3>
 						<div class="row screenshot-gallery">
@@ -117,6 +114,13 @@
 			<script src="../assets/js/breakpoints.min.js"></script>
 			<script src="../assets/js/util.js"></script>
 			<script src="../assets/js/main.js"></script>
+		<script src="../assets/js/tech-library.js"></script>
+		<script>
+			document.getElementById("tech-rendered").innerHTML = renderTechnologies([
+				"Unity 3D",
+				"Finite State Machines"
+			]);
+		</script>
 
 	</body>
 </html>

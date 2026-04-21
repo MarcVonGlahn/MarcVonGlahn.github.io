@@ -81,14 +81,7 @@
 						</ul>
 
 						<h3>Technologies Used</h3>
-						<ul>
-							<li><strong>Unreal Engine</strong></li>
-							<li><strong>C++</strong></li>
-							<li><strong>Blueprint</strong></li>
-							<li><strong>Gameplay Ability System</strong></li>
-							<li><strong>Behaviour Trees</strong></li>
-							<li><strong>Niagara Particle Systems</strong></li>
-						</ul>
+						<div id="tech-rendered"></div>
 
 						<h3>Screenshots</h3>
 						<div class="row screenshot-gallery">
@@ -126,6 +119,17 @@
 			<script src="../assets/js/breakpoints.min.js"></script>
 			<script src="../assets/js/util.js"></script>
 			<script src="../assets/js/main.js"></script>
+		<script src="../assets/js/tech-library.js"></script>
+		<script>
+			document.getElementById("tech-rendered").innerHTML = renderTechnologies([
+				"Unreal Engine",
+				"C++",
+				"Blueprint",
+				"Gameplay Ability System",
+				"Behaviour Trees",
+				"Niagara Particle Systems"
+			]);
+		</script>
 
 	</body>
 </html>

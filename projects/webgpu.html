@@ -79,11 +79,7 @@
 						</ul>
 
 						<h3>Technologies Used</h3>
-						<ul>
-							<li><strong>WebGPU</strong></li>
-							<li><strong>emscripten</strong></li>
-							<li><strong>OpenGL</strong></li>
-						</ul>
+						<div id="tech-rendered"></div>
 
 						<br>
 						<a href="../index.html" class="button">Back to Portfolio</a>
@@ -108,6 +104,14 @@
 			<script src="../assets/js/breakpoints.min.js"></script>
 			<script src="../assets/js/util.js"></script>
 			<script src="../assets/js/main.js"></script>
+		<script src="../assets/js/tech-library.js"></script>
+		<script>
+			document.getElementById("tech-rendered").innerHTML = renderTechnologies([
+				"WebGPU",
+				"emscripten",
+				"OpenGL"
+			]);
+		</script>
 
 	</body>
 </html>

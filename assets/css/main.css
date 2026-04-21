@@ -235,6 +235,41 @@ input, select, textarea {
 		object-fit: cover;
 	}
 
+	/* Tech Grid */
+	.tech-grid {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+		justify-content: center;
+		margin: 20px 0;
+	}
+
+	.tech-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 80px;
+	}
+
+	.tech-item img {
+		width: 80px;
+		height: 80px;
+		object-fit: contain;
+		border-radius: 10px;
+	}
+
+	.tech-item span {
+		margin-top: 8px;
+		font-size: 0.85em;
+		text-align: center;
+	}
+
+	.tech-text {
+		font-weight: bold;
+		font-size: 0.9em;
+		padding: 10px 5px;
+	}
+
 /* Container */
 
 	.container {
