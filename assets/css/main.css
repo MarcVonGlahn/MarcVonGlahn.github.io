@@ -6,6 +6,7 @@
 	--mobile-sidebar-width: 300px;
 	--desktop-container-width: 960px;
 	--header-transition-speed: 0.5s;
+	--screenshot-max-width: 1200px;
 }
 
 /*
@@ -267,7 +268,7 @@ input, select, textarea {
 
 	.row {
 		display: flex;
-		flex-wrap: nowrap;
+		flex-wrap: wrap;
 		box-sizing: border-box;
 		align-items: stretch;
 	}
@@ -306,6 +307,12 @@ input, select, textarea {
 
 		.row > .imp {
 			order: -1;
+		}
+
+		.screenshot-gallery {
+			width: 100%;
+			max-width: var(--screenshot-max-width);
+			margin-left: 0;
 		}
 
 		.row > .col-1 {
