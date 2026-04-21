@@ -262,12 +262,37 @@ input, select, textarea {
 		margin-top: 8px;
 		font-size: 0.85em;
 		text-align: center;
+		line-height: 1.1;
 	}
 
 	.tech-text {
 		font-weight: bold;
 		font-size: 0.9em;
 		padding: 10px 5px;
+	}
+
+	.tech-rendered .tech-grid {
+		gap: 10px;
+		margin: 10px 0;
+	}
+
+	.tech-rendered .tech-item {
+		width: 50px;
+	}
+
+	.tech-rendered .tech-item img {
+		width: 50px;
+		height: 50px;
+	}
+
+	.tech-rendered .tech-item span {
+		font-size: 0.7em;
+		margin-top: 4px;
+	}
+
+	.tech-rendered .tech-text {
+		font-size: 0.7em;
+		padding: 5px 3px;
 	}
 
 /* Container */
@@ -2139,41 +2164,6 @@ input, select, textarea {
 					border-radius: 5px;
 				}
 
-/* Slideshow */
-	.dropdown-slideshow {
-		display: flex;
-		max-height: 0;
-		overflow: hidden;
-		justify-content: center;
-		margin: 25px 25px 25px 25px;
-		transition: max-height 0.5s ease-out;
-	}
-
-	.dropdown-slideshow.open {
-		max-height: 500px; /* Adjust as needed */
-	}
-
-	.slideshow-image {
-		flex: 1; /* Add this line */
-		max-width: 30%;
-		height: auto;
-		display: block;
-		object-fit: cover;
-		margin-right: 1em; /* Add this line */
-		margin-bottom: 1em;
-	}
-
-	.slideshow-image:last-child {
-		margin-right: 0; /* Add this line */
-	}
-
-	@media (max-width: 600px) {
-		.slideshow-image {
-			max-width: 100%; /* Add this line */
-		}
-	}
-
-	
 /* Icons */
 
 	.icon {

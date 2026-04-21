@@ -123,15 +123,4 @@
 					visibleClass: 'header-visible'
 				});
 
-	//Slideshow
-
-	var dropdownButtons = document.querySelectorAll('.dropdown-btn');
-
-	dropdownButtons.forEach(function(button) {
-		button.addEventListener('click', function() {
-			var dropdown = this.nextElementSibling;
-			dropdown.classList.toggle('open');
-		});
-	});
-
-})(jQuery);
+	})(jQuery);

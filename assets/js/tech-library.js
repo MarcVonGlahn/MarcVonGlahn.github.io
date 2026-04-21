@@ -41,7 +41,7 @@ function resolveTech(tech) {
 	return null;
 }
 
-function renderTechnologies(techs) {
+function renderTechnologies(techs, showName = true) {
 	if (!techs || techs.length === 0) return "";
 	
 	const renderedImages = new Set();
@@ -54,14 +54,22 @@ function renderTechnologies(techs) {
 		if (data.image) {
 			if (renderedImages.has(data.image)) continue;
 			renderedImages.add(data.image);
-			html += `<div class="tech-item">
+			if (showName) {
+				html += `<div class="tech-item">
 	<img src="${data.image}" alt="${data.name}" />
 	<span>${data.name}</span>
 </div>\n`;
+			} else {
+				html += `<div class="tech-item">
+	<img src="${data.image}" alt="${data.name}" />
+</div>\n`;
+			}
 		} else {
-			html += `<div class="tech-item">
+			if (showName) {
+				html += `<div class="tech-item">
 	<span class="tech-text">${data.name}</span>
 </div>\n`;
+			}
 		}
 	}
 	
