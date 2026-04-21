@@ -2073,6 +2073,11 @@ input, select, textarea {
 		border-color: #12355d;
 	}
 
+	.button-small {
+		font-size: 0.75em;
+		margin-bottom: 15px;
+	}
+
 /* Item */
 
 	
@@ -2080,9 +2085,10 @@ input, select, textarea {
 	/*Here is shadows*/
 	.item {
 		box-shadow: 0 0em 0em 0 rgba(0, 0, 0, 0.105);
-		margin-bottom: 40px;
+		margin-bottom: 55px;
 		background: #ffffff;
 		border-radius: 10px;
+		border: 2px solid #12355d;
 	}
 
 		.item header {
