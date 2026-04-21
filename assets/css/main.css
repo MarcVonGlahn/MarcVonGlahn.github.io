@@ -2056,6 +2056,23 @@ input, select, textarea {
 			background-color: #12355d;
 		}
 
+	.button-outline {
+		background-color: #fff;
+		color: #12355d !important;
+		border: 5px solid #12355d;
+	}
+
+	.button-outline:hover {
+		background-color: #12355d;
+		color: #fff !important;
+		border-color: #fff;
+	}
+
+	.button-outline:active {
+		background-color: #12355d;
+		border-color: #12355d;
+	}
+
 /* Item */
 
 	
