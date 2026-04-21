@@ -1,6 +1,13 @@
 @import url("fontawesome-all.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,600");
 
+:root {
+	--sidebar-width: 300px;
+	--mobile-sidebar-width: 300px;
+	--desktop-container-width: 960px;
+	--header-transition-speed: 0.5s;
+}
+
 /*
 	Prologue by HTML5 UP
 	html5up.net | @ajlkn
@@ -240,45 +247,21 @@ input, select, textarea {
 		font-weight: 500;
 	}
 
-		@media screen and (min-width: 961px) and (max-width: 1880px) {
+	@media screen and (min-width: 961px) {
 
-			.container {
-				width: 1200px;
-			}
-
+		.container {
+			width: var(--desktop-container-width);
 		}
 
-		@media screen and (min-width: 961px) and (max-width: 1620px) {
+	}
 
-			.container {
-				width: 960px;
-			}
+	@media screen and (max-width: 960px) {
 
+		.container {
+			width: 100%;
 		}
 
-		@media screen and (min-width: 961px) and (max-width: 1320px) {
-
-			.container {
-				width: 100%;
-			}
-
-		}
-
-		@media screen and (max-width: 960px) {
-
-			.container {
-				width: 100%;
-			}
-
-		}
-
-		@media screen and (max-width: 736px) {
-
-			.container {
-				width: 100%;
-			}
-
-		}
+	}
 
 /* Row */
 
@@ -2209,7 +2192,7 @@ input, select, textarea {
 		position: fixed;
 		text-align: right;
 		top: 0;
-		width: 375px;
+		width: var(--sidebar-width);
 	}
 
 		#header .top {
@@ -2442,158 +2425,94 @@ input, select, textarea {
 				background-color: #e8edec;
 			}
 
-/* Wide */
+/* Desktop */
 
-	@media screen and (min-width: 961px) and (max-width: 1880px) {
+	@media screen and (min-width: 961px) {
 
-		/* Basic */
+		#headerToggle {
+			display: none;
+		}
 
-			body, input, textarea, select {
-				font-size: 17pt;
+		body, input, textarea, select {
+			font-size: 16pt;
+		}
+
+		.container {
+			padding: 0 2em 0 2em;
+		}
+
+		ul.icons li a {
+			width: 1.75em;
+		}
+
+		.item {
+			margin-bottom: 20px;
+		}
+
+		#header {
+			width: var(--sidebar-width);
+		}
+
+		#logo .image {
+			position: relative;
+			margin: 0 0 0.5em 0;
+		}
+
+		#nav ul li a {
+			font-size: 0.8em;
+			padding-top: 0.5em;
+			padding-bottom: 0.5em;
+		}
+
+			#nav ul li a span {
+				padding-right: 2.25em;
 			}
 
-		/* Header */
-
-			#header {
-				width: 300px;
-			}
-
-		/* Footer */
-
-			#footer {
-				margin-left: 300px;
-			}
-
-		/* Main - for big screens*/
-
-			#main {
-				margin-left: 300px;
-			}
-
-			/* Offset we need for the top to work right*/
-			#main > #top {
-				left: 300px;
-			}
-
-			#main > section.two {
-				margin-top: 3.5em;
-			}
-	}
-
-/* Normal */
-
-	@media screen and (min-width: 961px) and (max-width: 1620px) {
-
-		/* Main */
-
-			#main > section {
-				padding: 3em 0;
-			}
-
-			#main section.cover {
-				padding: 3em 0;
-			}
-
-			#main > section.two {
-				margin-top: 3.5em;
-			}
-
-			/* Offset we need for the top to work right*/
-			#main > #top {
-				left: 300px;
-			}
-
-	}
-
-/* Narrow */
-
-	@media screen and (min-width: 961px) and (max-width: 1320px) {
-
-		/* Basic */
-
-			body, input, textarea, select {
-				font-size: 16pt;
-			}
-
-			.container {
-				padding: 0 2em 0 2em;
-			}
-
-		/* Icons */
-
-			ul.icons li a {
-				width: 1.75em;
-			}
-
-		/* Item */
-
-			.item {
-				margin-bottom: 20px;
-			}
-
-		/* Header */
-
-			#header {
-				width: 20%;
-			}
-
-			#logo .image {
-				position: relative;
-				margin: 0 0 0.5em 0;
-			}
-
-			#nav ul li a {
-				font-size: 0.8em;
-				padding-top: 0.5em;
-				padding-bottom: 0.5em;
-			}
-
-				#nav ul li a span {
-					padding-right: 2.25em;
+				#nav ul li a span:before {
+					left: 100%;
+					margin-left: -1.25em;
+					line-height: 2.25em;
 				}
 
-					#nav ul li a span:before {
-						left: 100%;
-						margin-left: -1.25em;
-						line-height: 2.25em;
-					}
+		#footer {
+			margin-left: var(--sidebar-width);
+		}
 
-		/* Footer */
+		#main {
+			margin-left: var(--sidebar-width);
+		}
 
-			#footer {
-				margin-left: 20%;
-			}
+		#main > #top {
+			left: var(--sidebar-width);
+			width: calc(100% - var(--sidebar-width));
+		}
 
-		/* Main */
+		#main > section {
+			padding: 3em 0;
+		}
 
-			#main {
-				margin-left: 20%;
-			}
+		#main section.cover {
+			padding: 3em 0;
+		}
 
-			/* Offset we need for the top to work right*/
-			#main > #top {
-				left: 20%;
-				width: 80%; /*100% - 20%*/
-			}
+		#main > section.two {
+			margin-top: 3.5em;
+		}
 
-			#main > section.two {
-				margin-top: 3.5em;
-			}
-
-			.image-grid {
-				display: grid;
-				margin: auto;
-				place-content: center;
-				grid-template-columns: repeat(auto-fill, minmax(150px, 0fr));
-				gap: 25px;
-			}
-		
-			.image-grid img {
-				width: 150px;
-				height: 150px;
-				border-radius: 15px;
-				object-fit: cover;
-			}
+		.image-grid {
+			display: grid;
+			margin: auto;
+			place-content: center;
+			grid-template-columns: repeat(auto-fill, minmax(150px, 0fr));
+			gap: 25px;
+		}
+	
+		.image-grid img {
+			width: 150px;
+			height: 150px;
+			border-radius: 15px;
+			object-fit: cover;
+		}
 
 	}
 
@@ -2643,14 +2562,14 @@ input, select, textarea {
 				-webkit-backface-visibility: hidden;
 				-ms-backface-visibility: hidden;
 				backface-visibility: hidden;
-				-moz-transform: translateX(-275px);
-				-webkit-transform: translateX(-275px);
-				-ms-transform: translateX(-275px);
-				transform: translateX(-275px);
-				-moz-transition: -moz-transform 0.5s ease;
-				-webkit-transition: -webkit-transform 0.5s ease;
-				-ms-transition: -ms-transform 0.5s ease;
-				transition: transform 0.5s ease;
+				-moz-transform: translateX(calc(-1 * var(--mobile-sidebar-width)));
+				-webkit-transform: translateX(calc(-1 * var(--mobile-sidebar-width)));
+				-ms-transform: translateX(calc(-1 * var(--mobile-sidebar-width)));
+				transform: translateX(calc(-1 * var(--mobile-sidebar-width)));
+				-moz-transition: -moz-transform var(--header-transition-speed) ease;
+				-webkit-transition: -webkit-transform var(--header-transition-speed) ease;
+				-ms-transition: -ms-transform var(--header-transition-speed) ease;
+				transition: transform var(--header-transition-speed) ease;
 				-webkit-overflow-scrolling: touch;
 				display: block;
 				height: 100%;
@@ -2658,9 +2577,8 @@ input, select, textarea {
 				overflow-y: auto;
 				position: fixed;
 				top: 0;
-				width: 275px;
+				width: var(--mobile-sidebar-width);
 				z-index: 10002;
-				width: 275px;
 				background: #12355d url("images/overlay.png");
 				box-shadow: inset -0.25em 0 0.25em 0 rgba(0, 0, 0, 0.125);
 			}
@@ -2822,68 +2740,4 @@ input, select, textarea {
 
 	}
 
-/* Mobile */
-
-	@media screen and (max-width: 736px) {
-
-		/* Basic */
-
-			body, input, textarea, select {
-				font-size: 14pt;
-			}
-
-			h2 {
-				font-size: 1.5em;
-				letter-spacing: 0;
-				font-weight: 300;
-			}
-
-			.container {
-				padding: 0 15px 0 15px;
-			}
-
-		/* List */
-
-			ul.icons a {
-				width: 2em;
-				font-size: 1.25em;
-			}
-
-		/* Main */
-
-			#main > #top > #toppy h2{
-				margin-top: -50px;
-				margin-bottom: -10px;
-			}
-
-			#main > section {
-				padding: 2em 0;
-			}
-
-			#main section.cover {
-				padding: 3em 0em;
-			}
-
-			#main > section.two {
-				margin-top: 4em;
-			}
-
-				#main section.cover header {
-					padding: 0 1em;
-				}
-
-		/* Footer */
-
-			#footer .copyright li {
-				display: block;
-				line-height: 1.25em;
-				border: 0;
-				padding: 0;
-				margin: 1em 0 0 0;
-			}
-
-				#footer .copyright li:first-child {
-					margin-top: 0;
-				}
-
-	}
+/* Mobile - merged small mobile styles into main mobile section above */
