@@ -1881,6 +1881,18 @@ input, select, textarea {
 			padding-left: 0.5em;
 		}
 
+		section.two ul {
+			padding-left: 0;
+		}
+
+		section.two ul li {
+			padding-left: 0;
+		}
+
+		section.two ul, section.two ul li {
+			text-align: left;
+		}
+
 	ol {
 		list-style: decimal;
 		padding-left: 1.25em;
