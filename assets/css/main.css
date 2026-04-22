@@ -2148,7 +2148,7 @@ input, select, textarea {
 			}
 		
 			.item .item-content .item-text {
-				flex: 1 0 50%; /* This will make the text take up 50% of the width */
+				flex: 1 0 50%;
 				max-width: 50%;
 				min-height: 100%;
 				align-self: center;
@@ -2163,15 +2163,117 @@ input, select, textarea {
 				flex: 1 0 40%;
 				max-width: 50%;
 				align-self: center;
-				margin: 0; /* Reset margin */
-				padding: 0; /* Reset padding */
-				display: flex; /* Make this a flex container */
-				align-items: center; /* Vertically center the content */
-				justify-content: center; /* Horizontally center the content */
+				margin: 0;
+				padding: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				font-size: 0.8em;
+			}
+
+			.item .item-content .company-logo {
+				width: 100px;
+				height: 100px;
+				object-fit: contain;
+			}
+
+			.item .item-content .company-details {
+				text-align: center;
+				margin-top: 10px;
+			}
+
+			.item .item-content .company-name {
+				font-size: 1.2em;
+				font-weight: 500;
+			}
+
+			.item .item-content .company-location {
+				font-size: 1em;
+				margin-top: -10px;
+			}
+
+			.item .item-content .job-title {
+				font-size: 1.2em;
+			}
+
+			.item .item-content .experience-date {
+				font-size: 1em;
+			}
+
+			.item .item-content .item-date {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
 			}
 		
 			.item .item-content .item-text p {
+				line-height: 1.4;
+				font-size: 90%;
+			}
+		
+
+			.experience-item .item-content .item-text {
+				flex: 1 0 50%;
+				max-width: 50%;
+				min-height: 100%;
+				align-self: center;
+				margin: 5% 5% 0 0;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.experience-item .item-content .item-text strong {
+				font-weight: 500;
+			}
+
+			.experience-item .item-date {
+				flex: 1 0 40%;
+				max-width: 50%;
+				align-self: center;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 0.8em;
+			}
+
+			.experience-item .item-content .company-logo {
+				width: 100px;
+				height: 100px;
+				object-fit: contain;
+			}
+
+			.experience-item .item-content .company-details {
+				text-align: center;
+				margin-top: 10px;
+			}
+
+			.experience-item .item-content .company-name {
+				font-size: 1.2em;
+				font-weight: 500;
+			}
+
+			.experience-item .item-content .company-location {
+				font-size: 1em;
+				margin-top: -10px;
+			}
+
+			.experience-item .item-content .job-title {
+				font-size: 1.2em;
+			}
+
+			.experience-item .item-content .experience-date {
+				font-size: 1em;
+			}
+
+			.experience-item .item-content .item-date {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
 				line-height: 1.4; /* Adjust this value to change the gap between lines */
 				font-size: 90%; /* This will make the font size 90% of the inherited font size */
 			}
