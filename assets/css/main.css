@@ -2057,6 +2057,8 @@ input, select, textarea {
 		}
 
 	.button-outline {
+		font-size: 0.75em;
+		padding: 0.75em 1.5em;
 		background-color: #fff;
 		color: #12355d !important;
 		border: 5px solid #12355d;
@@ -2127,7 +2129,7 @@ input, select, textarea {
 				max-width: 50%;
 				align-self: center; /* Vertically center the image */
 				margin: 0; /* Reset margin */
-				padding: 0; /* Reset padding */
+				padding: 0 0 0 15px; /* Reset padding, add left padding */
 				display: flex; /* Make this a flex container */
 				align-items: center; /* Vertically center the content */
 				justify-content: center; /* Horizontally center the content */
