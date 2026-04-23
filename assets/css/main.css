@@ -1924,6 +1924,20 @@ input, select, textarea {
 			border: 0;
 		}
 
+a.steam-link,
+		a.steam-link:link,
+		a.steam-link:visited,
+		a.steam-link:focus,
+		a.steam-link:active {
+			color: #000;
+			font-size: 2em;
+			text-decoration: none !important;
+		}
+
+		a.steam-link:hover {
+			color: #12355d;
+		}
+
 /* Form */
 
 	form label {
