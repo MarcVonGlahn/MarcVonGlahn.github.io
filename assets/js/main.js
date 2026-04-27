@@ -58,8 +58,8 @@
 				var	$this = $(this),
 					href = $this.attr('href');
 
-				// Skip external URLs (starts with ../, http, https, mailto:, or #) - only process internal anchors
-				if (!href || href.startsWith('../') || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#'))
+				// Skip external URLs and empty hrefs — only process internal anchors (starting with #)
+				if (!href || href.startsWith('../') || href.startsWith('http') || href.startsWith('mailto:'))
 					return;
 
 				var id = href,

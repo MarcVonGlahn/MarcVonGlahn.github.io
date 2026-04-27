@@ -2498,7 +2498,7 @@ a.steam-link,
 /* Footer */
 
 	#footer {
-		margin-left: 375px;
+		margin-left: var(--sidebar-width);
 		text-align: center;
 		background-color: #dce3e2;
 		padding: 3em 0 4em 0;
@@ -2534,34 +2534,27 @@ a.steam-link,
 		#main > section {
 			margin-top: 0px;
 			overflow: hidden;
-			padding: 4em 0;
+			padding: 3em 0;
 			box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.05), inset 0 0.1em 0.1em 0 rgba(0, 0, 0, 0.025);
 			text-align: center;
 			background-image: url("images/overlay.png");
 		}
 
 			#main > #top {
-				position: fixed;
+				position: sticky;
 				top: 0;
-				left: 0;
-				width: calc(100% - 300px);
-				height: 35px; /* New, smaller height */
-				z-index: 999; /* Ensure it's above other content but below any overlaying header */
-				/* overflow-y: auto; Adds scroll if content overflows */
+				height: auto;
+				min-height: 50px;
+				z-index: 999;
+				padding: 0;
 			}
 
-			#main > #top > #toppy {
-				margin: auto;
-				width: inherit;
-			}
-
-			#main > #top > #toppy h2{
-				margin-top: -65px;
-				margin-bottom: -15px;
-			}
+		#main > #top > #toppy {
+			margin: auto;
+			width: inherit;
+		}
 
 			#main > section.dark {
-				color: #ddd;
 				color: rgba(255, 255, 255, 0.75);
 			}
 
@@ -2584,7 +2577,6 @@ a.steam-link,
 					}
 
 			#main > section.cover {
-				padding: 3em 0;
 				background-size: cover;
 				background-position: center center;
 			}
@@ -2595,7 +2587,6 @@ a.steam-link,
 			}
 
 			#main > section.two {
-				margin-top: 3.5em;
 				background-color: #f5fafa;
 			}
 
@@ -2666,23 +2657,6 @@ a.steam-link,
 
 		#main {
 			margin-left: var(--sidebar-width);
-		}
-
-		#main > #top {
-			left: var(--sidebar-width);
-			width: calc(100% - var(--sidebar-width));
-		}
-
-		#main > section {
-			padding: 3em 0;
-		}
-
-		#main section.cover {
-			padding: 3em 0;
-		}
-
-		#main > section.two {
-			margin-top: 3.5em;
 		}
 
 		.image-grid {
@@ -2915,25 +2889,6 @@ a.steam-link,
 				padding-bottom: 1px;
 				margin-left: 0;
 			}
-
-				#main > section {
-					padding: 3em 0;
-				}
-
-				#main section.cover {
-					padding: 3em 0;
-					width: calc(100% - 3em);
-				}
-				
-				#main > #top {
-					left: 0;
-					width: 100%;
-				}
-
-				#main > section.two {
-					margin-top: 3.5em;
-				}
-
 
 				.image-grid {
 					display: grid;
