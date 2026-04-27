@@ -2728,13 +2728,31 @@ a.steam-link,
 				padding: 0 2em 0 2em;
 			}
 
-		/* Item */
+/* Item */
 
-			.item {
-				margin-bottom: 15px;
-			}
+		.item {
+			margin-bottom: 15px;
+		}
 
-		/* Icons */
+		.item .item-content {
+			flex-direction: column;
+		}
+
+		.item .item-content .image {
+			flex: none;
+			max-width: 100%;
+			width: 100%;
+			padding: 15px 15px 0 15px;
+		}
+
+		.item .item-content .item-text {
+			flex: none;
+			max-width: 100%;
+			width: 100%;
+			margin: 0 5%;
+		}
+
+	/* Icons */
 
 			ul.icons a {
 				width: 1.75em;
