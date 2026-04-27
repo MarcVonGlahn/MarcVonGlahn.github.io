@@ -2724,11 +2724,15 @@ a.steam-link,
 				display: none;
 			}
 
-			.container {
-				padding: 0 2em 0 2em;
-			}
+.container {
+			padding: 0 2em 0 2em;
+		}
 
-/* Item */
+		#main > #top > #toppy p {
+			font-size: clamp(0.7em, 2.5vw, 1.2em);
+		}
+
+	/* Item */
 
 		.item {
 			margin-bottom: 15px;
