@@ -2413,9 +2413,9 @@ a.steam-link,
 				transition: color 0.35s ease-in-out;
 			}
 
-				#header .icons a:hover {
-					color: #fff;
-				}
+			#header .icons a:hover {
+				color: #3c91e6;
+			}
 
 	#logo {
 		position: relative;
@@ -2552,6 +2552,7 @@ a.steam-link,
 		#main > #top > #toppy {
 			margin: auto;
 			width: inherit;
+			padding: 0.5em 0;
 		}
 
 			#main > section.dark {
