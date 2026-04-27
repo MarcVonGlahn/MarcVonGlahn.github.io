@@ -56,7 +56,13 @@
 			.each(function() {
 
 				var	$this = $(this),
-					id = $this.attr('href'),
+					href = $this.attr('href');
+
+				// Skip external URLs (starts with ../, http, https, mailto:, or #) - only process internal anchors
+				if (!href || href.startsWith('../') || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#'))
+					return;
+
+				var id = href,
 					$section = $(id);
 
 				// No section for this link? Bail.

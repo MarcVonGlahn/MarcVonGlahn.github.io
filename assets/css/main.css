@@ -2708,23 +2708,27 @@ a.steam-link,
 		display: none;
 	}
 
-	@media screen and (max-width: 960px) {
+@media screen and (max-width: 960px) {
 
 		/* Basic */
 
-			html, body {
-				overflow-x: hidden;
-			}
+		html, body {
+			overflow-x: hidden;
+		}
 
-			body, input, textarea, select {
-				font-size: 16pt;
-			}
+		#headerToggle {
+			display: block !important;
+		}
 
-			header br {
-				display: none;
-			}
+		body, input, textarea, select {
+			font-size: 16pt;
+		}
 
-.container {
+		header br {
+			display: none;
+		}
+
+		.container {
 			padding: 0 2em 0 2em;
 		}
 
