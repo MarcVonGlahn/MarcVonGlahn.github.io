@@ -35,18 +35,21 @@
 							This page is still under construction.
 						</div>
 
+						<h3>Key Features</h3>
+						<ul>
+							<li>Third person shooter with roguelike elements and permanent progression.</li>
+							<li>Custom <strong>Manager Registry System</strong> for enemy spawning, global material management, combat and other system.</li>
+							<li>Highly stylized world with no lit material and an expanding color change shader using <strong>Signed Distance Fields</strong>.</li>
+							<li><strong>Gameplay Ability System</strong> for skill and ability management</li>
+						</ul>
+
+						<h2>Overview</h2>
+
 						<p>This is a third person shooter with roguelike elements, devoloped by myself in <strong>Unreal Engine 5</strong>. The project started as a learning experience for myself to deepen my knowledge in UE5, and then naturally progressed into a full game that is <a href="https://store.steampowered.com/app/3571580/ABSTRACTICA/" class="steam-link" target="_blank">available to wishlist on Steam</a>. <br><br>
 						I am responsible for every aspect of the game, but on this page I want to showcase what I did in regards to 4 areas: <strong>Gameplay Programming</strong>, <strong>Shader Programming</strong>, <strong>Game AI</strong>, and the use of the <strong>Gameplay Ability System</strong>. In developement, I leverage a mix of <strong>C++</strong> and Blueprints, trying to implement as much of the heavy lifting in C++ as possible. But more on that below.
 						</p>
 
-						<h3>Key Features</h3>
-						<ul>
-							<li>Third person shooter with roguelike elements and permanent progression</li>
-							<li>Highly stylized world with no lit material using custom shaders</li>
-							<li>Gameplay Ability System for skill and ability management</li>
-							<li>Multi-phased boss enemy design</li>
-							<li>Expanding color change shader using Signed Distance Fields</li>
-						</ul>
+						
 
 						<h2>Game Programming</h2>
 						<p>The Game Programming section will contain a few different systems that I would like to highlight.</p>
@@ -124,14 +127,72 @@ void RequestManager(TFunction&lt;void(T*)> Callback)
 }
 </code></pre>
 
-						<p>This functionality helps keep a clean approach to the registration of "global managers".</p>
+						<p>This functionality helps keep a clean approach to the registration of managers, and is also very useful when triggering logic at very specific points. A good example of this in action is from the <strong>Level Loading Manager</strong>. In the example, I wait for the registered manager to be the level enemy spawn manager, to then do a different bit of logic right after the registration.</p>
+
+						<p>
+							<div class="col-6">
+								<a class="image fit narrow"><img src="../images/marciman/abstractica/wait-for-enemy-spawn-manager-registered-blueprint-example_1.png" alt="" /></a>
+							</div>
+						</p>
 
 						<h3>Enemy Spawn Manager</h3>
-						<p>Talking about the Manager Registry, I want to highlight a small manager that is level specific. Each Level in ABSTRACTICA has it's own library of spawn points. These spawn points are stored in a level specific <strong>Enemy Spawn Manager</strong>. As described earlier, this manager is registered in <code class="inline-code">PostInitializeComponents()</code>. Through the use of the manager registry, we then request the spawn manager like this:</p>
+						<p>To pick up from the last example, I want to highlight what the Enemy Spawn Manager actually does. After the registration is done, which is the point at which we assume the level is loaded, a spawn offset timer start, to allow for the player to settle in for a couple of seconds before the enemies spawn and all hell breaks loose.</p>
+						
+						<p>
+							<div class="col-6">
+								<a class="image fit narrow"><img src="../images/marciman/abstractica/wait-for-enemy-spawn-manager-registered-blueprint-example_2.png" alt="" /></a>
+							</div>
+						</p>
 
-						<div class="col-6">
-								<a href="#" class="image fit narrow"><img src="../images/marciman/abstractica/trigger-spawn-enemies-blueprint-example_1.png" alt="" /></a>
-						</div>
+						
+						<p>Each Level in ABSTRACTICA has it's own library of spawn points. These spawn points are stored in a level specific <strong>Enemy Spawn Manager</strong>. As described earlier, this manager is registered in <code class="inline-code">PostInitializeComponents()</code>. Through the use of the manager registry, we then request the spawn manager like this:</p>
+
+						<p>
+							<div class="col-6">
+								<a class="image fit narrow"><img src="../images/marciman/abstractica/trigger-spawn-enemies-blueprint-example_1.png" alt="" /></a>
+							</div>
+						</p>
+
+						<p>Because ABSTRACTICA is a roguelike, you will come across the same level multiple times. To vary the experience, I defined a random amount range of enemies per type that could potentially spawn. Each Enemy Spawn Point in a level also has an associated enemy type <code class="inline-code">EMyShapeEnemyType</code>, which we use to randomly select the wanted spawn points that we are going to activate. This makes sure, that I have full control over the <strong>potential</strong> spawn positions, while still keeping the procedural element of spawning alive.</p>
+
+						<pre><code class="language-cpp">TArray&lt;AMyEnemySpawnPoint*> AMyLevelEnemySpawnManager::GetRandomAmountOfSpawnPointsByShapeEnemyType(
+	const EMyShapeEnemyType shapeEnemyType,
+	const int minRandomRange,
+	const int maxRandomRange
+)
+{
+	TArray&lt;AMyEnemySpawnPoint*> spawnPoints;
+
+	TArray&lt;AMyEnemySpawnPoint*> filteredSpawnPoints;
+
+	for (AMyEnemySpawnPoint* spawnPoint : enemySpawnPoints)
+	{
+		if (spawnPoint->GetShapeEnemyType() != shapeEnemyType)
+		{
+			continue;
+		}
+
+		filteredSpawnPoints.Add(spawnPoint);
+	}
+
+	const int32 clampedMax = FMath::Min(maxRandomRange, filteredSpawnPoints.Num());
+	const int32 clampedMin = FMath::Min(minRandomRange, clampedMax);
+	const int32 randomAmount = FMath::RandRange(clampedMin, clampedMax);
+
+	TArray&lt;AMyEnemySpawnPoint*> shuffled = filteredSpawnPoints;
+	for (int32 i = shuffled.Num() - 1; i > 0; i--)
+	{
+		int32 j = FMath::RandRange(0, i);
+		shuffled.Swap(i, j);
+	}
+
+	for (int32 i = 0; i &lt; randomAmount; i++)
+	{
+		spawnPoints.Add(shuffled[i]);
+	}
+
+	return spawnPoints;
+}</code></pre>
 
 
 						<h3>Shader Programming</h3>
