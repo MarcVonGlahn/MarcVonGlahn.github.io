@@ -5,46 +5,15 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="stylesheet" href="../assets/css/project.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 		<link rel="icon" href="../images/favicon.ico" />
 	</head>
-	<body class="is-preload">
+	<body class="is-preload project-page-body">
 
-		<!-- Header -->
-			<div id="header">
-
-				<div class="top">
-					<!-- Logo -->
-						<div id="logo">
-							<span class="image avatar48"><img src="../images/marciman/avatar_marc.jpg" alt="" /></span>
-							<h1 id="title">Marc von Glahn</h1>
-						<p>Programmer.</p>
-						<p>Indie Game Developer.</p>
-						<p>MSc Student.</p>
-						</div>
-
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li><a href="../index.html" id="portfolio-link"><span class="icon solid fa-th">Portfolio</span></a></li>
-								<li><a href="../index.html#skillset" id="skillset-link"><span class="icon solid fa-wrench">Skillset</span></a></li>
-								<li><a href="../index.html#about" id="about-link"><span class="icon solid fa-tasks">Experience</span></a></li>
-								<li><a href="../index.html#edu" id="edu-link"><span class="icon solid fa-graduation-cap">Education</span></a></li>
-							</ul>
-						</nav>
-
-				</div>
-
-				<div class="bottom">
-
-					<!-- Social Icons -->
-						<ul class="icons">
-							<li><a href="https://www.linkedin.com/in/marc-von-glahn-33a20a24a/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-							<li><a href="https://store.steampowered.com/app/2459820/Flat_Spot/" class="icon brands fa-steam"  target="_blank"><span class="label">Steam</span></a></li>
-						</ul>
-
-				</div>
-
-			</div>
+		<!-- Header — populated by sidebar.js from assets/sidebar.html -->
+			<div id="header"></div>
 
 		<!-- Main -->
 			<div id="main">
@@ -60,6 +29,11 @@
 
 				<section class="two">
 					<div class="container">
+
+						<div class="wip-banner">
+							<span class="icon solid fa-wrench"></span>
+							This page is still under construction.
+						</div>
 
 						<p>This scenery was programmed using the graphics API <strong>WebGPU</strong> and the compiler toolchain <strong>emscripten</strong> to deepen my knowledge of 3D graphics.<br><br>
 						Through University courses I gained a foothold in 3D graphics programming using <strong>OpenGL</strong>, and in this ongoing project I use the gained expertise to implement various techniques, like Blinn-Phong shading among others. I followed the brilliant tutorial series of <a href="https://eliemichel.github.io/LearnWebGPU/introduction.html"  target="_blank">Elié Michel</a>.</p>
@@ -92,6 +66,7 @@
 			</div>
 
 		<!-- Scripts -->
+			<script src="../assets/js/sidebar.js"></script>
 			<script src="../assets/js/jquery.min.js"></script>
 			<script src="../assets/js/jquery.scrolly.min.js"></script>
 			<script src="../assets/js/jquery.scrollex.min.js"></script>
@@ -107,6 +82,8 @@
 				"OpenGL"
 			]);
 		</script>
+
+		<script>hljs.highlightAll();</script>
 
 	</body>
 </html>

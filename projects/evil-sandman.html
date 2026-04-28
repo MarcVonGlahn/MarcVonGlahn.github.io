@@ -5,46 +5,15 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="stylesheet" href="../assets/css/project.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 		<link rel="icon" href="../images/favicon.ico" />
 	</head>
-	<body class="is-preload">
+	<body class="is-preload project-page-body">
 
-		<!-- Header -->
-			<div id="header">
-
-				<div class="top">
-					<!-- Logo -->
-						<div id="logo">
-							<span class="image avatar48"><img src="../images/marciman/avatar_marc.jpg" alt="" /></span>
-							<h1 id="title">Marc von Glahn</h1>
-						<p>Programmer.</p>
-						<p>Indie Game Developer.</p>
-						<p>MSc Student.</p>
-						</div>
-
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li><a href="../index.html" id="portfolio-link"><span class="icon solid fa-th">Portfolio</span></a></li>
-								<li><a href="../index.html#skillset" id="skillset-link"><span class="icon solid fa-wrench">Skillset</span></a></li>
-								<li><a href="../index.html#about" id="about-link"><span class="icon solid fa-tasks">Experience</span></a></li>
-								<li><a href="../index.html#edu" id="edu-link"><span class="icon solid fa-graduation-cap">Education</span></a></li>
-							</ul>
-						</nav>
-
-				</div>
-
-				<div class="bottom">
-
-					<!-- Social Icons -->
-						<ul class="icons">
-							<li><a href="https://www.linkedin.com/in/marc-von-glahn-33a20a24a/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-							<li><a href="https://store.steampowered.com/app/2459820/Flat_Spot/" class="icon brands fa-steam"  target="_blank"><span class="label">Steam</span></a></li>
-						</ul>
-
-				</div>
-
-			</div>
+		<!-- Header — populated by sidebar.js from assets/sidebar.html -->
+			<div id="header"></div>
 
 		<!-- Main -->
 			<div id="main">
@@ -60,6 +29,11 @@
 
 				<section class="two">
 					<div class="container">
+
+						<div class="wip-banner">
+							<span class="icon solid fa-wrench"></span>
+							This page is still under construction.
+						</div>
 
 						<p>This Game Jam project was pieced together by a <strong>Team of 6 in 48 hours</strong>. Armed with a dreamcatcher, you embark on a mission to defeat enemies and the evil Sandman in a fever dream world. I programmed the <strong>character controller</strong> and the <strong>Enemy AI using Finite State Machines</strong>, and helped with character rigging and animation.</p>
 
@@ -102,6 +76,7 @@
 			</div>
 
 		<!-- Scripts -->
+			<script src="../assets/js/sidebar.js"></script>
 			<script src="../assets/js/jquery.min.js"></script>
 			<script src="../assets/js/jquery.scrolly.min.js"></script>
 			<script src="../assets/js/jquery.scrollex.min.js"></script>
@@ -116,6 +91,8 @@
 				"Finite State Machines"
 			]);
 		</script>
+
+		<script>hljs.highlightAll();</script>
 
 	</body>
 </html>

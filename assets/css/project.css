@@ -1,0 +1,57 @@
+/* ============================================================
+   project.css — overrides applied only to project pages.
+   Linked exclusively from files inside projects/*.html.
+   index.html and main.css are NOT affected.
+   ============================================================ */
+
+/* 10% smaller font, weight 400 — scoped to main content only.
+   Sidebar (#header), buttons, and footer inherit from body unchanged. */
+body.project-page-body #main {
+    font-size: 90%;
+    font-weight: 400;
+}
+
+/* Left-align all content inside section.two on project pages.
+   Overrides the global text-align: center set by #main > section
+   in main.css, but only where project.css is loaded. */
+#main > section.two {
+    text-align: left;
+}
+
+/* Code block presentation */
+pre {
+    margin: 1.5em 0;
+    border-radius: 6px;
+    overflow: auto;
+}
+
+pre code.hljs {
+    border-radius: 6px;
+    font-size: 0.85em;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   Work-in-progress banner — self-contained, project pages only.
+   To remove site-wide: delete this block and the .wip-banner
+   div from each project page.
+   To remove from a single page: delete only that page's
+   <div class="wip-banner"> element.
+   ============================================================ */
+.wip-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    background: #fff8e1;
+    border: 2px solid #f0b429;
+    border-radius: 6px;
+    padding: 0.6em 1em;
+    margin-bottom: 1.5em;
+    font-size: 0.9em;
+    color: #7a5c00;
+    font-weight: 400;
+}
+
+.wip-banner .icon::before {
+    color: #f0b429;
+}

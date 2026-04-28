@@ -163,7 +163,7 @@ input, select, textarea {
 	}
 
 	strong, b {
-		font-weight: 300;
+		font-weight: 600;
 		color: #666;
 	}
 
@@ -1924,19 +1924,34 @@ input, select, textarea {
 			border: 0;
 		}
 
-a.steam-link,
-		a.steam-link:link,
-		a.steam-link:visited,
-		a.steam-link:focus,
-		a.steam-link:active {
-			color: #000;
-			font-size: 2em;
-			text-decoration: none !important;
-		}
+a.steam-link {
+		text-decoration: none;
+		color: inherit;
+		white-space: nowrap;
+	}
 
-		a.steam-link:hover {
-			color: #12355d;
-}
+	a.steam-link::after {
+		font-family: 'Font Awesome 5 Brands';
+		content: '\f1b6';
+		font-weight: 400;
+		font-style: normal;
+		font-size: 1em;
+		line-height: 1;
+		margin-left: 0.3em;
+		display: inline-block;
+		vertical-align: middle;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	a.steam-link:empty::after {
+		margin-left: 0;
+	}
+
+	a.steam-link:hover,
+	a.steam-link:hover::after {
+		color: #3c91e6;
+	}
 
 	/* Form */
 
