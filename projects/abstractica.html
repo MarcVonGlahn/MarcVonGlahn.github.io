@@ -32,7 +32,7 @@
 
 						<div class="wip-banner">
 							<span class="icon solid fa-wrench"></span>
-							This page is still under construction.
+							This project is still on-going, thus this page will be updated regularly. Some sections are still under construction.
 						</div>
 
 						<h3>Key Features</h3>
@@ -194,9 +194,107 @@ void RequestManager(TFunction&lt;void(T*)> Callback)
 	return spawnPoints;
 }</code></pre>
 
+						<!-- Shader Programming -->
+						<h2>Shader Programming</h2>
 
-						<h3>Shader Programming</h3>
-						<p>This is where the Shader Programming stuff goes.</p>
+						<p>
+							<div class="col-6">
+								<a class="image fit narrow"><img src="../images/marciman/abstractica/display-change-demo-high-res-2.gif" alt="" /></a>
+							</div>
+						</p>
+
+						<p>One of the aspects of ABSTRACTICA that by far draws the most attention is the unique visual style. Inspired by the spongebob episode "SB-129" and a great lecture I heard about Signed Distance Fields, the game has a very simplistic, unlit-shaded world. To get a bit of juice into the game however, I wanted to build a shader that would allow me to directly influence the environment with differing objects, the most obvious of which is a bullet impact.<br><br>
+						
+						The "bullet impact tear drop"-effect works as follows: The position of the bullet hit is stored in a pre-loaded variable called <code class="inline-code">IXY</code>, with <code class="inline-code">XY</code> being the index in the limited array of tear drops we can register (16 in total). A bullet hit is registered through the <strong>General Material Manager</strong> to as follows:</p>
+
+						<pre><code class="language-cpp">void AMyGeneralMaterialManager::RegisterHit(const FVector& hitLocation)
+{
+	_hitDataArray[_currentHitIndex].isActive = true;
+	_hitDataArray[_currentHitIndex].hitLocation = hitLocation;
+	_hitDataArray[_currentHitIndex].intensity = 0.0f;
+
+	_hitDataArray[_currentHitIndex].timer = 0.0f;
+
+	_currentHitIndex++;
+
+	_currentHitIndex %= _hitDataArray.Num();
+}</code></pre>
+
+						<p><code class="inline-code">_hitDataArray</code> is an array of a custom struct <code class="inline-code">FDisplayChangeSDFData</code>, which keeps track of active tear drops in the shader. The <code class="inline-code">Tick</code>-method then handles the scaling of the radius that creates the tear drop effect. By using a <code class="inline-code">UMaterialParameterCollection</code> called <code class="inline-code">displayModeParameterCollection</code>, we can globally affect a fixed set of variables in a single class, and continously keep track of the active tear drops. The tick looks as follows:</p>
+
+						<p>We cycle through the hit data array and check, whether the element is currently active.</p>
+						<pre><code class="language-cpp">for (int i = 0; i &lt; _hitDataArray.Num(); i++)
+	{
+		if (!_hitDataArray[i].isActive)
+		{
+			continue;
+		}</code></pre>
+
+						<p>If the element is active, we increase the timer on it. We then check if the timer exceeds the defined duration of the tear drop effect, and deactivate the element if necessary.</p>
+						<pre><code class="language-cpp">		_hitDataArray[i].timer += DeltaTime;
+
+		_hitDataArray[i].isActive = _hitDataArray[i].timer  &lt;= effectDuration;</code></pre>
+
+						<p>If the element is still active, we then evaluate an effect curve by getting the ratio of the timer to the effect duration, which will give us a clean value between 0 and 1. The result is our new intensity of the tear drop, which will be set to the <code class="inline-code">.A</code>-parameter value of the <code class="inline-code">impactParameter</code> from the Material Parameter Collection.</p>
+						<pre><code class="language-cpp">		if (_hitDataArray[i].isActive)
+		{
+			const float eval = FMath::Clamp(_hitDataArray[i].timer / effectDuration, 0.0f, 1.0f);
+
+			_hitDataArray[i].intensity = effectCurve->GetFloatValue(eval);
+
+			const FName impactParameterName = FName(*FString::Printf(TEXT("I%d"), i));
+
+			FLinearColor impactParameter;
+			impactParameter.R = _hitDataArray[i].hitLocation.X;
+			impactParameter.G = _hitDataArray[i].hitLocation.Y;
+			impactParameter.B = _hitDataArray[i].hitLocation.Z;
+			impactParameter.A = _hitDataArray[i].intensity;
+
+			UKismetMaterialLibrary::SetVectorParameterValue(
+				GetWorld(),
+				displayModeParameterCollection,
+				impactParameterName,
+				impactParameter);
+		}
+	}</code></pre>
+
+						<p>Using a custom material expression in Unreal Engines Material Editor, we can then feed all of the parameters, and a custom  of the Material Parameter Collection into the following function:</p>
+						<pre><code class="language-cpp">float result = 0.0f;
+
+float4 slots[16] = 
+{ 
+I0, I1, I2, I3, I4, I5, I6, I7,
+I8, I9, I10, I11, I12, I13, I14, I15
+};
+
+for (int i = 0; i &lt; 16; i++)
+{
+    float3 impactPos   = slots[i].xyz;
+    float  intensity   = slots[i].w;      // driven by Blueprint timeline, 0→1→0
+
+    float dist = length(WorldPos - impactPos);
+    float edge = saturate(1.0 - (dist / ImpactRadius));
+    edge = pow(edge, 2.0);
+    result += edge * intensity;
+}
+
+return saturate(result);</code></pre>
+
+						<p>The result is a mask on the material, which we use to display the alternative color of the material. Each material used in ABSTRACTICA has a, for lack of better naming, <strong>Dark Color</strong> and a <strong>Light Color</strong>. These colors are complimentary colors, which creates a nice harmonic contrast when a tear drop is triggered. The mask we created gets passed on to be multiplied with both the light and the dark color, and the result is the color of that fragment on the material.</p>
+
+						<p>
+							<div class="col-6">
+								<a class="image fit"><img src="../images/marciman/abstractica/display-change-material-graph-example_1.png" alt="" /></a>
+							</div>
+						</p>
+
+						<p>A nice side effect of the use of Material Parameter collections is the fact that a tear drop "bleeds" between different surfaces that use different materials.</p>
+
+						<p>
+							<div class="col-6">
+								<a class="image fit narrow"><img src="../images/marciman/abstractica/display-change-demo-high-res-3.gif" alt="" /></a>
+							</div>
+						</p>
 
 						<h3>Game AI</h3>
 						<p>This is where the Game AI stuff goes.</p>
