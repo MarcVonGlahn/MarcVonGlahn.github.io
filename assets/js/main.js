@@ -58,12 +58,12 @@
 				var	$this = $(this),
 					href = $this.attr('href');
 
-				// Skip external URLs and empty hrefs — only process internal anchors (starting with #)
-				if (!href || href.startsWith('../') || href.startsWith('http') || href.startsWith('mailto:'))
-					return;
+			// Skip anything that isn't a plain same-page anchor (must start with exactly '#')
+			if (!href || href.charAt(0) !== '#')
+				return;
 
-				var id = href,
-					$section = $(id);
+			var id = href,
+				$section = $(id);
 
 				// No section for this link? Bail.
 				if ($section.length < 1)

@@ -27,8 +27,28 @@ pre {
 
 pre code.hljs {
     border-radius: 6px;
-    font-size: 0.85em;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.82em;
     line-height: 1.5;
+}
+
+/* UE5-specific syntax highlighting — injected by ue5-highlight.js after hljs runs */
+.hljs-ue5-type {
+    color: #4ec9b0; /* teal — matches vs2015 built_in/type color */
+}
+
+.hljs-ue5-macro {
+    color: #9b9b9b; /* medium grey — matches UE5 editor macro color */
+}
+
+/* Inline code in prose — use class="inline-code".
+   Intentionally NOT applied to pre > code to avoid affecting code blocks. */
+code.inline-code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
 }
 
 /* ============================================================

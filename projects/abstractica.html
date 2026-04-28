@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>Project Name - Marc von Glahn</title>
@@ -48,8 +48,91 @@
 							<li>Expanding color change shader using Signed Distance Fields</li>
 						</ul>
 
-						<h3>Gameplay Programming</h3>
-						<p>This is where the Gameplay Programming stuff goes.</p>
+						<h2>Game Programming</h2>
+						<p>The Game Programming section will contain a few different systems that I would like to highlight.</p>
+
+						<h3>Manager Registry</h3>
+						<p>ABSTRACTICA, despite its minimalistic art style, has grown into decently big project. I realized at some point that I was gonna have multiple distinct manager classes for spawn points, enemy locations, material management and other things. So, instead of turning all of the managers to their own singleton <i>(which they sometimes shouldn't even be)</i> I decided to go for a more controlled approach: The <strong>Manager Registry</strong>, a.k.a "Service Locator" or "Singleton Directory". </p>
+
+						<pre><code class="language-cpp">UCLASS()
+class ABSTRACTICA_API UMyManagerRegistry : public UGameInstanceSubsystem
+{
+	GENERATED_BODY()
+
+	// Manager Registry Code ...
+};
+</code></pre>
+						<p>As a child of <code class="inline-code">UGameInstanceSubsystem</code>, the Manager Registry acts like it's own singleton, so I did not avoid using singletons entirely. <i>But</i>, I found this solution to be much cleaner than having every manager be it's own subsystem.<br><br>
+							
+						A new manager is usually registered on <code class="inline-code">PostInitializeComponents()</code>, which fires before on <code class="inline-code">BeginPlay()</code>. The registering method broadcasts the registration of a new manager, as well as clearing any pending requests for that particular manager that were made before the manager was registered.</p>
+						
+<pre><code class="language-cpp">void UMyManagerRegistry::RegisterManager(AActor* ManagerActor, TSubclassOf&lt;AActor> ManagerClass)
+{
+	if (!ManagerActor)
+	{
+		return;
+	}
+
+	ManagerRegistry.Add(ManagerClass, ManagerActor);
+
+	ManagerRegisteredEvent.Broadcast(ManagerActor);
+
+	// Fire and clear any pending callbacks waiting for this manager
+	if (TArray&lt;TFunction&lt;void(AActor*)>>* Callbacks = PendingCallbacks.Find(ManagerClass))
+	{
+		for (auto& Callback : *Callbacks)
+		{
+			Callback(ManagerActor);
+		}
+		PendingCallbacks.Remove(ManagerClass);
+	}
+}
+
+void UMyManagerRegistry::UnregisterManager(AActor* ManagerActor, TSubclassOf&lt;AActor> ManagerClass)
+{
+	if (!ManagerActor)
+	{
+		return;
+	}
+
+	ManagerRegistry.Remove(ManagerClass);
+}
+</code></pre>
+						
+						<p>To get access to one of the managers, we need to request the manager class from the Manager Registry, which then checks if the manager is already registered or if we should wait for it to be registered. Either way, we wait until we get a valid response, which it then returned.</p>
+
+<pre><code class="language-cpp">// Fires immediately if already registered, otherwise queues
+template &lt;typename T>
+void RequestManager(TFunction&lt;void(T*)> Callback)
+{
+	UClass* ManagerClass = T::StaticClass();
+
+	if (const TWeakObjectPtr&lt;AActor>* Found = ManagerRegistry.Find(ManagerClass))
+	{
+		if (Found->IsValid())
+		{
+			Callback(Cast&lt;T>(Found->Get()));
+			return;
+		}
+	}
+
+	// Queue the callback, wrapped to cast to the correct type
+	PendingCallbacks.FindOrAdd(ManagerClass).Add([Callback](AActor* Actor)
+	{
+		Callback(Cast&lt;T>(Actor));
+	});
+}
+</code></pre>
+
+						<p>This functionality helps keep a clean approach to the registration of "global managers".</p>
+
+						<h3>Enemy Spawn Manager</h3>
+						<p>Talking about the Manager Registry, I want to highlight a small manager that is level specific. Each Level in ABSTRACTICA has it's own library of spawn points. These spawn points are stored in a level specific <strong>Enemy Spawn Manager</strong>. As described earlier, this manager is registered in <code class="inline-code">PostInitializeComponents()</code>. Through the use of the manager registry, we then request the spawn manager like this:</p>
+
+						<div class="col-6">
+								<a href="#" class="image fit narrow"><img src="../images/marciman/abstractica/trigger-spawn-enemies-blueprint-example_1.png" alt="" /></a>
+						</div>
+
 
 						<h3>Shader Programming</h3>
 						<p>This is where the Shader Programming stuff goes.</p>
@@ -151,6 +234,7 @@ void AAbstracticaCharacter::ActivatePrimaryAbility()
 		</script>
 
 		<script>hljs.highlightAll();</script>
+    <script src="../assets/js/ue5-highlight.js"></script>
 
 	</body>
 </html>

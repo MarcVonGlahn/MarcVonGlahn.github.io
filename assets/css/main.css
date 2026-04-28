@@ -1842,6 +1842,11 @@ input, select, textarea {
 			width: 100%;
 		}
 
+		.image.fit.narrow {
+			display: block;
+			width: 75%;
+		}
+
 		.image.fit.extra {
 			display: block;
 			float: left;
