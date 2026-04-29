@@ -10,7 +10,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 		<link rel="icon" href="../images/favicon.ico" />
 	</head>
-	<body class="is-preload project-page-body">
+	<body class="is-preload project-page-body" data-page="abstractica">
 
 		<!-- Header — populated by sidebar.js from assets/sidebar.html -->
 			<div id="header"></div>
@@ -35,7 +35,7 @@
 							This project is still on-going, thus this page will be updated regularly. Some sections are still under construction.
 						</div>
 
-						<h3>Key Features</h3>
+						<h2>Key Features</h2>
 						<ul>
 							<li>Third person shooter with roguelike elements and permanent progression.</li>
 							<li>Custom <strong>Manager Registry System</strong> for enemy spawning, global material management, combat and other system.</li>
@@ -379,10 +379,55 @@ return saturate(result);</code></pre>
 							</div>
 						</p>
 
-						<h3>Game AI</h3>
-						<p>This is where the Game AI stuff goes.</p>
+						<h2>Game AI</h2>
+						<p>Currently, there are 3 types of enemies that the player can fight: The <strong>Shape Enemies</strong>, the <strong>Tangram Enemies</strong> and the <strong>Painting Enemies</strong> (a.k.a the "Boss" Enemies). All of these enemies will behave based on the use of Unreal Engines built in Behavior Tree system. I am writing in future tense, because currently only the Shape Enemies have a defined behavior, which I will touch on quite briefly in the following.</p>
 
-						<h3>Gameplay Ability System</h3>
+						<h3>Enemy AI Design</h3>
+						<p>The are currently <strong>3 types of Shape Enemies</strong> in the game: <strong>Triangle</strong>, <strong>Square</strong> and <strong>Circle</strong>. The Shape Enemies generally can be thought of as the "filler"-units of the game. The idea is that the Shape enemies should always be there, be easily predictable, but also for them to pose a challenge if the player is too slow with taking them out. All Shape Enemies have one major behavior that was designed to influence a different part of the players behaviour.</p>
+						<p>The <strong>Circle</strong> is the simplest Shape Enemy. The idea is simply: "Make the player move around". The Circle constantly charges at the player, and it will explode on impact to deal a decent amount of damage.</p>
+						<p>The idea behind the <strong>Square</strong> is: Find a way for the player to pay attention while moving around. When the Square has found a shooting location, it will fire 3 slow moving projectiles in the general direction of the player, with 2 of them being offset to the left or right respectively. Because of the slow velocity, and the fact that multiple Squares can fire a projectile at the same time, the level could easily be flooded by Square projectiles that the player has to watch out for.</p>
+						<p>The <strong>Triangle</strong> have a more targeted approach from range; once more the idea is "keep the player moving". When a Triangle reaches their desire shooting location, they fire 3-4 rapid shoots in the direction of the player, but only if the path is clear. If not, the Triangle will reposition and try again.</p>
+
+						<h3>Enemy Groups and Location Finding</h3>
+						<p>A problem I wanted to solve with the range attack enemies like Square and Triangle was the following: The enemies should dynamically choose good shooting locations, without me having to overengineer a dynamic system for them to find these locations. That's when I introduced something called <strong>Enemy Groups</strong> and <strong>Enemy Move Locations</strong>. Enemy group are of type <code class="inline-code">uint</code> and assigned by the enemies spawn position, and kept by the enemy throughout their entire lifecycle. I then place Enemy Move Locations throughout the level. These are locations that might be suited for a shooting position, such the edge of a platform or a nice elevated position. These Locations also store information about their occupation status within themselves. When choosing a new position to move to, which is done in a Task within the Behavior Tree, the enemy simply calls on the following method:</p>
+
+						<pre><code class="language-cpp">AMyLocationActor* AMyEnemyMoveLocationContainer::SelectRandomLocationActorFromGroup(ACharacter* selectingCharacter,
+	uint8 enemyGroupIndex)
+{
+	TArray&lt;AMyLocationActor*&gt; freeLocations;
+	for (AMyLocationActor* location : locationActors)
+	{
+		// Check if Location is occupied
+		if (location-&gt;IsOccupied())
+		{
+			continue;
+		}
+
+		// Check if Location has the same enemy group index.
+		if (location-&gt;enemyGroupIndex != enemyGroupIndex)
+		{
+			continue;
+		}
+
+		freeLocations.Add(location);
+	}
+
+	// If no more locations are free, then return a nullptr
+	if (freeLocations.IsEmpty())
+	{
+		return nullptr;
+	}
+
+	const int rand = FMath::RandRange(0, freeLocations.Num() - 1);
+
+	const auto selectedLocationActor = freeLocations[rand];
+
+	selectedLocationActor-&gt;OccupyLocation(selectingCharacter);
+
+	return selectedLocationActor;
+}</code></pre>
+
+						<h2>Gameplay Ability System</h2>
 						<p>This is where the GAS stuff goes.</p>
 <pre><code class="language-cpp">// Grant the ability to the ASC at begin play
 void AAbstracticaCharacter::BeginPlay()
@@ -408,7 +453,7 @@ void AAbstracticaCharacter::ActivatePrimaryAbility()
 }
 </code></pre>
 
-						<h3>Technologies Used</h3>
+						<h2>Technologies Used</h2>
 						<div id="tech-rendered"></div>
 
 						<h3>Screenshots</h3>

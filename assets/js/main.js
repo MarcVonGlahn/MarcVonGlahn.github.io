@@ -104,7 +104,14 @@
 			});
 
 	// Scrolly.
-		$('.scrolly').scrolly();
+	// Offset is computed dynamically from the sticky #top strip so that
+	// scrolly never overshoots sections — no magic numbers needed.
+		$('.scrolly').scrolly({
+			offset: function() {
+				var $top = $('#main > #top');
+				return $top.length ? $top.outerHeight() : 0;
+			}
+		});
 
 	// Header (narrower + mobile).
 
