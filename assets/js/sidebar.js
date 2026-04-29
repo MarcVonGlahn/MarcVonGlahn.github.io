@@ -78,9 +78,10 @@ var PROJECT_NAV = {
     }).join('');
 
     // Step 6: append Home link as the last item
-    items += '<li><a href="/">'
+    items = '<li><a href="/">'
         + '<span class="icon solid fa-home">Home</span>'
-        + '</a></li>';
+        + '</a></li>'
+        + items;
 
     // Step 7: replace the nav list (logo/bottom stay untouched)
     var navUl = document.querySelector('#nav ul');
