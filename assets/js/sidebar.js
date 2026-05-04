@@ -20,8 +20,8 @@
 // Add an entry here when a new project page needs section nav.
 // The value object is reserved for future per-project customisation.
 var PROJECT_NAV = {
-    abstractica: {}
-    // 'flat-spot':   {}
+    abstractica: {},
+    'flat-spot': {}
     // webgpu:        {}
 };
 // -----------------------------------------------------------------

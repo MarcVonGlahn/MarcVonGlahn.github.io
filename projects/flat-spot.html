@@ -10,7 +10,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 		<link rel="icon" href="../images/favicon.ico" />
 	</head>
-	<body class="is-preload project-page-body">
+	<body class="is-preload project-page-body" data-page="flat-spot">
 
 		<!-- Header — populated by sidebar.js from assets/sidebar.html -->
 			<div id="header"></div>
@@ -35,24 +35,217 @@
 							This page is still under construction.
 						</div>
 
-						<p>This casual motorsport management game was the centerpiece of my Bachelor's Thesis in Game Engineering, and was <strong>developed solo</strong> in <strong>Unity 3D</strong>. The biggest emphasis layed on the <strong>AI programming</strong>, making strong use of concepts like <strong>Finite State Machines</strong> and <strong>Utility Based AI</strong>. However, I also did the <strong>Gameplay programming</strong>, 3D modelling and <strong>shader programming</strong> (using Unity Shader Graph), as well as the <strong>implementation of sound effects using Wwise</strong>.<br><br>
-						I wanted the players to experience motorsport like never before: very simple. In this <strong>exiting, fast-paced</strong> management game you can be team principal of your own team, upgrade your car with newly built parts and train your drivers to compete in races and win the championship. Use your drivers <strong>Special Abilities</strong> to gain an advantage over other drivers on track and leave them in the dust.<br><br>
-						<sub><a href="https://store.steampowered.com/app/2459820/Flat_Spot/" class="steam-link" target="_blank">Visit Flat Spot on Steam</a></sub></p>
-
-						<h3>Key Features</h3>
+						<h2>Key Features</h2>
 						<ul>
-							<li>Solo-developed motorsport management game</li>
-							<li>Team principal role: upgrade cars and train drivers</li>
-							<li>Driver Special Abilities to gain competitive advantages</li>
-							<li>Racing and championship career mode</li>
-							<li>Custom shaders using Unity Shader Graph</li>
-							<li>Immersive audio implementation with Wwise</li>
+							<li>Solo-developed motorsport management game built in Unity 3D</li>
+							<li>Custom AI architecture combining <strong>Finite State Machines</strong> and <strong>Utility Based AI</strong></li>
+							<li>Driver Special Abilities system for strategic race advantages</li>
+							<li>Championship career mode with team management and progression</li>
+							<li>Custom visual shaders created with Unity Shader Graph</li>
+							<li>Immersive audio design implemented through <strong>Wwise</strong> integration</li>
 						</ul>
 
-						<h3>Technologies Used</h3>
+						<h2>Overview</h2>
+
+						<p>This casual motorsport management game was the centerpiece of my <strong>Bachelor's Thesis in Game Engineering</strong>, and was developed solo in <strong>Unity 3D</strong>. The biggest emphasis was placed on the <strong>AI programming</strong>, making strong use of concepts like <strong>Finite State Machines</strong> and <strong>Utility Based AI</strong>. However, I also handled the gameplay programming, 3D modelling, shader programming using Unity Shader Graph, as well as the implementation of sound effects using <strong>Wwise</strong>.
+						<br><br>
+						I wanted players to experience motorsport like never before: very simple. In this exciting, fast-paced management game you can be team principal of your own team, upgrade your car with newly built parts and train your drivers to compete in races and win the championship. Use your drivers' Special Abilities to gain an advantage over other drivers on track and leave them in the dust.
+						<br><br>
+						<a href="https://store.steampowered.com/app/2459820/Flat_Spot/" class="steam-link" target="_blank">Visit Flat Spot on Steam</a></p>
+
+						<h2>Game AI</h2>
+						<p>The AI system in Flat Spot is the core of the racing experience. Each driver on the track is controlled by an AI that makes decisions about racing lines, overtaking, defending, and when to use their Special Abilities. The AI is built on two main pillars: Finite State Machines for structured behavior flow, and Utility Based AI for dynamic decision-making within those states.</p>
+
+						<h3>Finite State Machines</h3>
+						<p>Each driver AI operates through two Finite State Machines that defines the high-level behavior during a race. The <code class="inline-code">Speed_FSM</code> is responsible for controling states like Acceleration, Braking, Holding and Pitlane. The <code class="inline-code">Line_FSM</code> on the other hand is responsible for the racing line the car takes, which in Flat Spot is defined through the 3 tracks Ideal, Outside and Inside. This structure ensures predictable and maintainable AI behavior while still allowing for dynamic responses to race conditions.</p>
+						<p>The State Machine has a reference to the current state, for which it executes the 3 main functions <code class="inline-code">OnStateEnter()</code>, <code class="inline-code">OnStateExit()</code> and <code class="inline-code">OnStateRunning()</code>:</p>
+
+<pre><code class="language-csharp">public class StateMachine : MonoBehaviour
+{
+    [Header("ShowLog")]
+    [SerializeField] private bool showLog;
+
+    protected State currentState;
+
+    private void Update()
+    {
+        if (currentState == null)
+            return;
+
+        currentState.OnStateRunning();
+    }
+
+    public void SetState(State newState)
+    {
+        if (currentState != null)
+            currentState.OnStateExit();
+
+        currentState = newState;
+
+        if (currentState != null)
+            currentState.OnStateEnter();
+    }
+
+    protected void LogMessage(string message)
+    {
+        if (!showLog)
+            return;
+
+        Debug.Log($"{gameObject.name}: {message}");
+    }
+}
+</code></pre>
+
+						<p>All of the states in an implemented state machine are wrapped inside a partial class for maximum scope control of the states. An example state machine setup for a Speed FSM would look like this:</p>
+
+						<pre><code class="language-csharp">public partial class Speed_RacingStateMachine : MarcimanStateMachine
+{
+    private float _timeInCurrentState;
+
+    private float _currentSpeed = 0f;
+
+    public float CurrentSpeed { get => _currentSpeed; }
+
+
+    #region Events
+    public delegate void EnterBreakingState();
+    public event EnterBreakingState OnEnterBreaking;
+
+    public delegate void ExitBreakingState();
+    public event ExitBreakingState OnExitBreaking;
+    #endregion
+
+
+    private void Start()
+    {
+        ChangeState(RacingSpeedState.Idle);
+    }
+
+    private void ChangeState(RacingSpeedState newState)
+    {
+        _currentState = newState;
+
+        switch (newState)
+        {
+            case RacingSpeedState.Idle:
+                SetState(new Speed_RacingState_Idle(this));
+                break;
+            case RacingSpeedState.Accelerate:
+                SetState(new Speed_RacingState_Accelerating(this));
+                break;
+            case RacingSpeedState.Breaking:
+                SetState(new Speed_RacingState_Breaking(this));
+                break;
+            case RacingSpeedState.Hold:
+                SetState(new Speed_RacingState_Holding(this));
+                break;
+            case RacingSpeedState.PitLane:
+                SetState(new Speed_RacingState_PitLane(this));
+                break;
+        }
+    }
+}
+</code></pre>
+
+						<p>The corresponding "Acceleration"-State could then look something like this:</p>
+
+						<pre><code class="language-csharp">public partial class Speed_RacingStateMachine
+{
+    public class Speed_RacingState_Accelerating : Speed_RacingState_Base
+    {
+        public Speed_RacingState_Accelerating(Speed_RacingStateMachine manager) : base(manager)
+        {
+
+        }
+
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+
+            EvaluateCurrentSpeed_OnEntry();
+        }
+
+        public override void OnStateRunning()
+        {
+            base.OnStateRunning();
+
+            EvaluateCurrentSpeed_OnRunning();
+
+            if (CheckIfBreakingReached())
+            {
+                Manager.ChangeState(RacingSpeedState.Breaking);
+            }
+        }
+
+        public override void OnStateExit()
+        {
+            base.OnStateExit();
+        }
+
+        #region Override Evaluate Speed
+        protected override void EvaluateCurrentSpeed_OnEntry()
+        {
+            float temp = GetTimeFromAnimationCurveValue();
+
+            speedOnStateEntry = Manager._currentSpeed;
+
+            timeFractionPassedOnEntry = temp;
+        }
+
+        protected override void EvaluateCurrentSpeed_OnRunning()
+        {
+			// Evaluating Acceleration and current speed based on the Properties of both driver and car.
+            float lerp = Manager._timeInCurrentState / (Manager.inRacePropertiesManager.RaceCarProperties.TimeToFullSpeed - Manager.GetTyreDegBonus());
+            float eval = Manager.inRacePropertiesManager.RaceCarProperties.AccelerationCurve.Evaluate(lerp + timeFractionPassedOnEntry);
+
+            Manager._currentSpeed = eval * (Manager.inRacePropertiesManager.TopSpeed + GetTopSpeedBonus());
+        }
+        #endregion
+
+
+        private float GetTopSpeedBonus()
+        {
+            float topSpeedBonus = 0f;
+
+			// Special Logic based on Upgrades in the game.
+
+            return topSpeedBonus;
+        }
+    }
+}
+</code></pre>
+
+						<p>As mentioned, there are multiple State Machines in the game, all of which tie together to bring the cars in Flat Spot to life. I am proud to say that for my first commercial project, this game scaled quite well, especially thanks to the robust base architecture of the State Machine.</p>
+
+						<h3>Utility Based AI</h3>
+						<p>In Flat Spot, the player takes the role of the manager. To have AI opponents in the game, I constructed a basic Utility-Based AI logic to create AI-managers of the other teams as your opponents.</p>
+
+
+
+						<h2>UI Programming</h2>
+						<p>As a management game, Flat Spot relies heavily on its user interface to communicate race information, team management options, and progression systems to the player. The UI was built entirely in Unity using the built-in UI system, with custom scripts handling data binding, state management, and dynamic updates during races.</p>
+						<p>Key UI systems include the race dashboard showing real-time positions and lap times, the team management screen for upgrading cars and training drivers, and the championship standings overview. Each panel is driven by dedicated controller scripts that pull data from the core game systems and update the display accordingly.</p>
+
+<pre><code class="language-csharp">public class ExampleClassName : MonoBehaviour
+{
+    // Implementation details
+}
+</code></pre>
+
+						<h2>Audio Implementation with Wwise</h2>
+						<p>The audio experience in Flat Spot was implemented using Audiokinetic's Wwise middleware. Wwise allows for dynamic and context-aware audio that responds to gameplay events, such as engine sounds changing with RPM, crowd reactions based on race position, and impactful sound effects when Special Abilities are activated.</p>
+						<p>The integration with Unity involves setting up Wwise events and RTPCs (Real-Time Parameter Controls) that are triggered from C# scripts. This approach separates audio design from code, allowing for iteration on sound design without needing to modify the game code.</p>
+
+<pre><code class="language-csharp">public class ExampleClassName : MonoBehaviour
+{
+    // Implementation details
+}
+</code></pre>
+
+						<h2>Technologies Used</h2>
 						<div id="tech-rendered"></div>
 
-						<h3>Screenshots</h3>
+						<h2>Screenshots</h2>
 						<div class="row screenshot-gallery">
 							<div class="col-6">
 								<a href="#" class="image fit"><img src="../images/marciman/flatspot/image_010_0000.png" alt="" /></a>
