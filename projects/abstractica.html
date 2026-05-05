@@ -428,30 +428,7 @@ return saturate(result);</code></pre>
 }</code></pre>
 
 						<h2>Gameplay Ability System</h2>
-						<p>This is where the GAS stuff goes.</p>
-<pre><code class="language-cpp">// Grant the ability to the ASC at begin play
-void AAbstracticaCharacter::BeginPlay()
-{
-    Super::BeginPlay();
-
-    if (HasAuthority() && AbilitySystemComponent)
-    {
-        for (TSubclassOf&lt;UGameplayAbility&gt;& Ability : DefaultAbilities)
-        {
-            AbilitySystemComponent->GiveAbility(
-                FGameplayAbilitySpec(Ability, 1, INDEX_NONE, this));
-        }
-    }
-}
-
-// Activate by gameplay tag (called from input binding)
-void AAbstracticaCharacter::ActivatePrimaryAbility()
-{
-    FGameplayTagContainer TagContainer;
-    TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Primary")));
-    AbilitySystemComponent->TryActivateAbilitiesByTag(TagContainer);
-}
-</code></pre>
+						<p>To manage abilities and attributes of all the characters in ABSTRACTICA, I have dipped my toes into using the Gameplay Ability System that is built into Unreal Engine. Every ability is a mix of Blueprints and C++, with the Math heavy logic generally moved into C++ for minor (not really necessary) performance gain.</p>
 
 						<h2>Technologies Used</h2>
 						<div id="tech-rendered"></div>
