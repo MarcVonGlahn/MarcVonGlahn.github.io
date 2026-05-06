@@ -1827,8 +1827,8 @@ input, select, textarea {
 		}
 
 		.image.avatar48 {
-			width: 64px;
-			height: 100px;
+			width: 96px;
+			height: 150px;
 			background: #f00;
 		}
 
@@ -2131,6 +2131,32 @@ a.steam-link {
 	
 
 	/*Here is shadows*/
+/* Year label wrapper for Other Projects cards */
+	.item-wrapper {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.75em;
+		margin-bottom: 55px;
+	}
+
+	.item-wrapper .item {
+		flex: 1;
+		min-width: 0;
+		margin-bottom: 0;
+	}
+
+	.item-year {
+		font-size: 3rem;
+		color: #aaa;
+		font-weight: 700;
+		writing-mode: vertical-rl;
+		transform: rotate(180deg);
+		flex-shrink: 0;
+		user-select: none;
+		line-height: 1;
+	}
+
 	.item {
 		box-shadow: 0 0em 0em 0 rgba(0, 0, 0, 0.105);
 		margin-bottom: 55px;
@@ -2425,6 +2451,10 @@ a.steam-link {
 			text-align: center;
 		}
 
+		#header .bottom .icons {
+			font-size: 1.6em;
+		}
+
 			#header .icons a {
 				color: #ffffff;
 				-moz-transition: color 0.35s ease-in-out;
@@ -2440,7 +2470,8 @@ a.steam-link {
 	#logo {
 		position: relative;
 		margin: 1.75em 1.5em 1.5em 1.5em;
-		min-height: 48px;
+		min-height: 150px;
+		padding-left: 108px;
 		cursor: default;
 	}
 
@@ -2735,6 +2766,17 @@ a.steam-link {
 
 		.item {
 			margin-bottom: 15px;
+		}
+
+		.item-wrapper {
+			flex-direction: column;
+			align-items: flex-start;
+			margin-bottom: 15px;
+		}
+
+		.item-year {
+			writing-mode: horizontal-tb;
+			transform: none;
 		}
 
 		.item .item-content {

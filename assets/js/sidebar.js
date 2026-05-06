@@ -21,8 +21,16 @@
 // The value object is reserved for future per-project customisation.
 var PROJECT_NAV = {
     abstractica: {},
-    'flat-spot': {}
-    // webgpu:        {}
+    'flat-spot': {},
+    'a-song-of-mold-and-cheese': {},
+    webgpu: {},
+    'for-god-and-motherland': {},
+    'brushwood-residence': {},
+    'evil-sandman': {},
+    'eternitys-lair': {},
+    'desk-dash': {},
+    'nightmare-on-bahnhofsstreet': {},
+    'not-pong': {}
 };
 // -----------------------------------------------------------------
 
