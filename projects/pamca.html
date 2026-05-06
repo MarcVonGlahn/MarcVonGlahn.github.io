@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>PAMCA - Marc von Glahn</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="stylesheet" href="../assets/css/project.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+		<link rel="icon" href="../images/favicon.ico" />
+	</head>
+	<body class="is-preload project-page-body" data-page="pamca">
+
+		<!-- Header — populated by sidebar.js from assets/sidebar.html -->
+			<div id="header"></div>
+
+		<!-- Main -->
+			<div id="main">
+
+				<section id="top" class="one dark cover">
+					<div id="toppy" class="container">
+						<header>
+							<h2 class="alt"><strong>PAMCA</strong></h2>
+							<p>Master Thesis — UE5 Plugin</p>
+						</header>
+						</div>
+				</section>
+
+				<section class="two">
+					<div class="container">
+
+						<div class="wip-banner">
+							<span class="icon solid fa-wrench"></span>
+							This page is still under construction.
+						</div>
+
+						<p>My Master's Thesis, titled <strong>"Contextual Augmentation of Motion Capture Animations using Procedural Animation Techniques and Parameterization"</strong>, resulted in a <strong>custom plugin for Unreal Engine 5</strong>. The plugin enables animators and developers to tweak parameters that procedurally modify existing motion capture animations — transforming a simple walk cycle into an injured limp, a drunken sway, or other contextual variations, all without requiring additional mocap sessions.</p>
+						<p>Under the hood, the system leverages various procedural animation principles, including <strong>inverse kinematics</strong>, to blend and parameterize motion data in real-time. The goal is to give artists a flexible tool that bridges the gap between handcrafted mocap data and the need for contextual variation in game characters.</p>
+						<p>Thanks to Rokoko, we could also make use of a Motion Capture suit to further understand the technology.</p>
+
+						<h2>Key Features</h2>
+						<ul>
+							<li>Custom UE5 plugin for procedural animation modification</li>
+							<li>Parameterize motion capture data to create contextual variations (injured limp, drunken sway, etc.)</li>
+							<li>Procedural animation techniques including inverse kinematics</li>
+							<li>Master's Thesis project at IT University Copenhagen</li>
+						</ul>
+
+						<h2>Technologies Used</h2>
+						<div id="tech-rendered"></div>
+
+						<br>
+						<a href="../index.html" class="button button-outline">Back to Portfolio</a>
+
+					</div>
+				</section>
+
+			</div>
+
+		<!-- Footer -->
+			<div id="footer">
+				<ul class="copyright">
+					<li>Design: Prologue by <a href="http://html5up.net">HTML5 UP</a>, modifications by Marc von Glahn</li>
+				</ul>
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/sidebar.js"></script>
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+		<script src="../assets/js/tech-library.js"></script>
+		<script>
+			document.getElementById("tech-rendered").innerHTML = renderTechnologies([
+				"Unreal Engine 5"
+			]);
+		</script>
+
+		<script>hljs.highlightAll();</script>
+    <script src="../assets/js/ue5-highlight.js"></script>
+
+	</body>
+</html>

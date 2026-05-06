@@ -30,7 +30,8 @@ var PROJECT_NAV = {
     'eternitys-lair': {},
     'desk-dash': {},
     'nightmare-on-bahnhofsstreet': {},
-    'not-pong': {}
+    'not-pong': {},
+    pamca: {}
 };
 // -----------------------------------------------------------------
 
