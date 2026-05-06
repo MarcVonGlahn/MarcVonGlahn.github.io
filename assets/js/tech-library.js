@@ -22,6 +22,7 @@ const techLibrary = {
 	"visual studio code": { image: "../images/skillset/visualstudiocode_logo.png", name: "VS Code" },
 	"vs code": { image: "../images/skillset/visualstudiocode_logo.png", name: "VS Code" },
 	"cmake": { image: "../images/skillset/cmake_logo.png", name: "CMake" },
+	"rokoko": {image: "../images/skillset/rokoko_logo.png", name: "Rokoko"}
 };
 
 const techImageAlias = {
