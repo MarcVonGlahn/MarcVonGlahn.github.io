@@ -1,0 +1,353 @@
+/* ─── Tech stack grid ─────────────────────────────────────────── */
+
+.tech-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+	margin: 20px 0;
+}
+
+.tech-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 80px;
+}
+
+.tech-item img {
+	width: 80px;
+	height: 80px;
+	object-fit: contain;
+	border-radius: 10px;
+}
+
+.tech-item span {
+	margin-top: 8px;
+	font-size: 0.85em;
+	text-align: center;
+	line-height: 1.1;
+}
+
+.tech-text {
+	font-weight: bold;
+	font-size: 0.9em;
+	padding: 10px 5px;
+}
+
+/* Smaller variant used inside project cards (showName=false context) */
+.tech-rendered .tech-grid {
+	gap: 10px;
+	margin: 10px 0;
+}
+
+.tech-rendered .tech-item {
+	width: 50px;
+}
+
+.tech-rendered .tech-item img {
+	width: 50px;
+	height: 50px;
+}
+
+.tech-rendered .tech-item span {
+	font-size: 0.7em;
+	margin-top: 4px;
+}
+
+.tech-rendered .tech-text {
+	font-size: 0.7em;
+	padding: 5px 3px;
+}
+
+
+/* ─── Steam link ──────────────────────────────────────────────── */
+
+a.steam-link {
+	text-decoration: none;
+	color: inherit;
+	white-space: nowrap;
+}
+
+a.steam-link::after {
+	font-family: 'Font Awesome 5 Brands';
+	content: '\f1b6';
+	font-weight: 400;
+	font-style: normal;
+	font-size: 1em;
+	line-height: 1;
+	margin-left: 0.3em;
+	display: inline-block;
+	vertical-align: middle;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+a.steam-link:empty::after {
+	margin-left: 0;
+}
+
+a.steam-link:hover,
+a.steam-link:hover::after {
+	color: #3c91e6;
+}
+
+
+/* ─── Button variants ─────────────────────────────────────────── */
+
+.button-outline {
+	font-size: 0.75em;
+	padding: 0.75em 1.5em;
+	background-color: #fff;
+	color: #12355d !important;
+	border: 5px solid #12355d;
+}
+
+.button-outline:hover {
+	background-color: #12355d;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.button-outline:active {
+	background-color: #12355d;
+	border-color: #12355d;
+}
+
+.button-small {
+	font-size: 0.75em;
+	margin-bottom: 15px;
+}
+
+
+/* ─── Project / Experience cards ──────────────────────────────── */
+
+.item-wrapper {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.75em;
+	margin-bottom: 55px;
+}
+
+.item-wrapper .item {
+	flex: 1;
+	min-width: 0;
+	margin-bottom: 0;
+}
+
+.item-year {
+	font-size: 2.5rem;
+	color: #aaa;
+	font-weight: 700;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	flex-shrink: 0;
+	user-select: none;
+	line-height: 1;
+}
+
+.item {
+	box-shadow: 0 0em 0em 0 rgba(0, 0, 0, 0.105);
+	margin-bottom: 55px;
+	background: #ffffff;
+	border-radius: 10px;
+	border: 2px solid #12355d;
+	padding-bottom: 15px;
+}
+
+.item header {
+	margin: 0;
+	padding: 1em 1.2em 1em 1.2em;
+	font-size: 0.8em;
+}
+
+.item header sub a {
+	font-weight: 450;
+}
+
+.item .item-content header h3 {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.item .item-content header h3 strong {
+	font-weight: 500;
+}
+
+.item .item-content header h4 {
+	font-size: 1em;
+	font-weight: lighter;
+	color: #7c7c7c;
+}
+
+.item .item-content {
+	display: flex;
+	align-items: stretch;
+}
+
+.item .item-content .image {
+	flex: 1 0 40%;
+	max-width: 50%;
+	align-self: center;
+	margin: 0;
+	padding: 0 0 0 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.item .item-content .item-text {
+	flex: 1 0 50%;
+	max-width: 50%;
+	min-height: 100%;
+	align-self: center;
+	margin: 0 5%;
+}
+
+.item .item-content .item-text strong {
+	font-weight: 500;
+}
+
+.item .item-content .item-text p {
+	line-height: 1.4;
+	font-size: 90%;
+}
+
+.item .item-date {
+	flex: 1 0 40%;
+	max-width: 50%;
+	align-self: center;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.8em;
+}
+
+.item .item-content .company-logo {
+	width: 100px;
+	height: 100px;
+	object-fit: contain;
+}
+
+.item .item-content .company-details {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.item .item-content .company-name     { font-size: 1.2em; font-weight: 500; }
+.item .item-content .company-location { font-size: 1em; margin-top: -10px; }
+.item .item-content .job-title        { font-size: 1.2em; }
+.item .item-content .experience-date  { font-size: 1em; }
+
+.item .item-content .item-date {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.experience-item .item-content .item-text {
+	flex: 1 0 50%;
+	max-width: 50%;
+	min-height: 100%;
+	align-self: center;
+	margin: 5% 5% 0 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.experience-item .item-content .item-text strong { font-weight: 500; }
+
+.experience-item .item-date {
+	flex: 1 0 40%;
+	max-width: 50%;
+	align-self: center;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.8em;
+}
+
+.experience-item .item-content .company-logo {
+	width: 100px;
+	height: 100px;
+	object-fit: contain;
+}
+
+.experience-item .item-content .company-details {
+	text-align: center;
+	margin-top: 10px;
+}
+
+
+/* ─── Portfolio card column: width + centering ────────────────── */
+
+#portfolio .row,
+#other-projects .row {
+	justify-content: center;
+}
+
+#portfolio .row > .col-4,
+#other-projects .row > .col-4 {
+	width: 85%;
+}
+
+
+/* ─── Mobile overrides (≤ 960px) ─────────────────────────────── */
+
+@include breakpoint('narrower') {
+
+	.item {
+		margin-bottom: 15px;
+	}
+
+	.item-wrapper {
+		flex-direction: column;
+		align-items: flex-start;
+		margin-bottom: 15px;
+	}
+
+	.item-year {
+		writing-mode: horizontal-tb;
+		transform: none;
+	}
+
+	.item .item-content {
+		flex-direction: column;
+	}
+
+	.item .item-content .image {
+		flex: none;
+		max-width: 100%;
+		width: 100%;
+		padding: 15px 15px 0 15px;
+	}
+
+	.item .item-content .item-text {
+		flex: none;
+		max-width: 100%;
+		width: 100%;
+		margin: 0 5%;
+	}
+
+	#portfolio .row > .col-4,
+	#other-projects .row > .col-4 {
+		width: 90%;
+	}
+
+}
+
+@include breakpoint('mobile') {
+
+	#portfolio .row > .col-4,
+	#other-projects .row > .col-4 {
+		width: 100%;
+	}
+
+}

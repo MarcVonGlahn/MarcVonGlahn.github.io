@@ -38,15 +38,15 @@
 						<h2>Key Features</h2>
 						<ul>
 							<li>Third person shooter with roguelike elements and permanent progression.</li>
-							<li>Custom <strong>Manager Registry System</strong> for enemy spawning, global material management, combat and other system.</li>
+							<li>Custom <strong>Manager Registry System</strong> for enemy spawning, global material management, combat and other systems.</li>
 							<li>Highly stylized world with no lit material and an expanding color change shader using <strong>Signed Distance Fields</strong>.</li>
-							<li><strong>Gameplay Ability System</strong> for skill and ability management</li>
+							<li><strong>Gameplay Ability System</strong> for skill and ability management.</li>
 						</ul>
 
 						<h2>Overview</h2>
 
-						<p>This is a third person shooter with roguelike elements, devoloped by myself in <strong>Unreal Engine 5</strong>. The project started as a learning experience for myself to deepen my knowledge in UE5, and then naturally progressed into a full game that is <a href="https://store.steampowered.com/app/3571580/ABSTRACTICA/" class="steam-link" target="_blank">available to wishlist on Steam</a>. <br><br>
-						I am responsible for every aspect of the game, but on this page I want to showcase what I did in regards to 4 areas: <strong>Gameplay Programming</strong>, <strong>Shader Programming</strong>, <strong>Game AI</strong>, and the use of the <strong>Gameplay Ability System</strong>. In developement, I leverage a mix of <strong>C++</strong> and Blueprints, trying to implement as much of the heavy lifting in C++ as possible. But more on that below.
+						<p>This is a third person shooter with roguelike elements, developed by myself in <strong>Unreal Engine 5</strong>. The project started as a learning experience for myself to deepen my knowledge in UE5, and then naturally progressed into a full game that is <a href="https://store.steampowered.com/app/3571580/ABSTRACTICA/" class="steam-link" target="_blank">available to wishlist on Steam</a>. <br><br>
+						I am responsible for every aspect of the game, but on this page I want to showcase what I did in regards to 4 areas: <strong>Gameplay Programming</strong>, <strong>Shader Programming</strong>, <strong>Game AI</strong>, and the use of the <strong>Gameplay Ability System</strong>. In development, I leverage a mix of <strong>C++</strong> and Blueprints, trying to implement as much of the heavy lifting in C++ as possible. But more on that below.
 						</p>
 
 						
@@ -55,7 +55,7 @@
 						<p>The Game Programming section will contain a few different systems that I would like to highlight.</p>
 
 						<h3>Manager Registry</h3>
-						<p>ABSTRACTICA, despite its minimalistic art style, has grown into decently big project. I realized at some point that I was gonna have multiple distinct manager classes for spawn points, enemy locations, material management and other things. So, instead of turning all of the managers to their own singleton <i>(which they sometimes shouldn't even be)</i> I decided to go for a more controlled approach: The <strong>Manager Registry</strong>, a.k.a "Service Locator" or "Singleton Directory". </p>
+						<p>ABSTRACTICA, despite its minimalistic art style, has grown into decently big project. I realized at some point that I was going to have multiple distinct manager classes for spawn points, enemy locations, material management and other things. So, instead of turning all of the managers to their own singleton <i>(which they sometimes shouldn't even be)</i> I decided to go for a more controlled approach: The <strong>Manager Registry</strong>, a.k.a "Service Locator" or "Singleton Directory". </p>
 
 						<pre><code class="language-cpp">UCLASS()
 class ABSTRACTICA_API UMyManagerRegistry : public UGameInstanceSubsystem
@@ -65,9 +65,9 @@ class ABSTRACTICA_API UMyManagerRegistry : public UGameInstanceSubsystem
 	// Manager Registry Code ...
 };
 </code></pre>
-						<p>As a child of <code class="inline-code">UGameInstanceSubsystem</code>, the Manager Registry acts like it's own singleton, so I did not avoid using singletons entirely. <i>But</i>, I found this solution to be much cleaner than having every manager be it's own subsystem.<br><br>
+						<p>As a child of <code class="inline-code">UGameInstanceSubsystem</code>, the Manager Registry acts like its own singleton, so I did not avoid using singletons entirely. <i>But</i>, I found this solution to be much cleaner than having every manager be its own subsystem.<br><br>
 							
-						A new manager is usually registered on <code class="inline-code">PostInitializeComponents()</code>, which fires before on <code class="inline-code">BeginPlay()</code>. The registering method broadcasts the registration of a new manager, as well as clearing any pending requests for that particular manager that were made before the manager was registered.</p>
+						A new manager is usually registered on <code class="inline-code">PostInitializeComponents()</code>, which fires before <code class="inline-code">BeginPlay()</code>. The registering method broadcasts the registration of a new manager, as well as clearing any pending requests for that particular manager that were made before the manager was registered.</p>
 						
 <pre><code class="language-cpp">void UMyManagerRegistry::RegisterManager(AActor* ManagerActor, TSubclassOf&lt;AActor> ManagerClass)
 {
@@ -102,7 +102,7 @@ void UMyManagerRegistry::UnregisterManager(AActor* ManagerActor, TSubclassOf&lt;
 }
 </code></pre>
 						
-						<p>To get access to one of the managers, we need to request the manager class from the Manager Registry, which then checks if the manager is already registered or if we should wait for it to be registered. Either way, we wait until we get a valid response, which it then returned.</p>
+						<p>To get access to one of the managers, we need to request the manager class from the Manager Registry, which then checks if the manager is already registered or if we should wait for it to be registered. Either way, we wait until we get a valid response, which is then returned.</p>
 
 <pre><code class="language-cpp">// Fires immediately if already registered, otherwise queues
 template &lt;typename T>
@@ -153,7 +153,7 @@ void RequestManager(TFunction&lt;void(T*)> Callback)
 							</div>
 						</p>
 
-						<p>Because ABSTRACTICA is a roguelike, you will come across the same level multiple times. To vary the experience, I defined a random amount range of enemies per type that could potentially spawn. Each Enemy Spawn Point in a level also has an associated enemy type <code class="inline-code">EMyShapeEnemyType</code>, which we use to randomly select the wanted spawn points that we are going to activate. This makes sure, that I have full control over the <strong>potential</strong> spawn positions, while still keeping the procedural element of spawning alive.</p>
+						<p>Because ABSTRACTICA is a roguelike, you will come across the same level multiple times. To vary the experience, I defined a random amount range of enemies per type that could potentially spawn. Each Enemy Spawn Point in a level also has an associated enemy type <code class="inline-code">EMyShapeEnemyType</code>, which we use to randomly select the wanted spawn points that we are going to activate. This makes sure that I have full control over the <strong>potential</strong> spawn positions, while still keeping the procedural element of spawning alive.</p>
 
 						<pre><code class="language-cpp">TArray&lt;AMyEnemySpawnPoint*> AMyLevelEnemySpawnManager::GetRandomAmountOfSpawnPointsByShapeEnemyType(
 	const EMyShapeEnemyType shapeEnemyType,
@@ -269,7 +269,7 @@ void AMyGeneralEnemyManager::ClearCurrentEnemyMoveLocationContainer()
 
 						<p>One of the aspects of ABSTRACTICA that by far draws the most attention is the unique visual style. Inspired by the spongebob episode "SB-129" and a great lecture I heard about Signed Distance Fields, the game has a very simplistic, unlit-shaded world. To get a bit of juice into the game however, I wanted to build a shader that would allow me to directly influence the environment with differing objects, the most obvious of which is a bullet impact.<br><br>
 						
-						The "bullet impact tear drop"-effect works as follows: The position of the bullet hit is stored in a pre-loaded variable called <code class="inline-code">IXY</code>, with <code class="inline-code">XY</code> being the index in the limited array of tear drops we can register (16 in total). A bullet hit is registered through the <strong>General Material Manager</strong> to as follows:</p>
+						The "bullet impact tear drop"-effect works as follows: The position of the bullet hit is stored in a pre-loaded variable called <code class="inline-code">IXY</code>, with <code class="inline-code">XY</code> being the index in the limited array of tear drops we can register (16 in total). A bullet hit is registered through the <strong>General Material Manager</strong> as follows:</p>
 <pre><code class="language-cpp">USTRUCT()
 struct FDisplayChangeSDFData
 {
@@ -303,7 +303,7 @@ struct FDisplayChangeSDFData
 	_currentHitIndex %= _hitDataArray.Num();
 }</code></pre>
 
-						<p><code class="inline-code">_hitDataArray</code> is an array of a custom struct <code class="inline-code">FDisplayChangeSDFData</code>, which keeps track of active tear drops in the shader. The <code class="inline-code">Tick</code>-method then handles the scaling of the radius that creates the tear drop effect. By using a <code class="inline-code">UMaterialParameterCollection</code> called <code class="inline-code">displayModeParameterCollection</code>, we can globally affect a fixed set of variables in a single class, and continously keep track of the active tear drops. The tick looks as follows:</p>
+						<p><code class="inline-code">_hitDataArray</code> is an array of a custom struct <code class="inline-code">FDisplayChangeSDFData</code>, which keeps track of active tear drops in the shader. The <code class="inline-code">Tick</code>-method then handles the scaling of the radius that creates the tear drop effect. By using a <code class="inline-code">UMaterialParameterCollection</code> called <code class="inline-code">displayModeParameterCollection</code>, we can globally affect a fixed set of variables in a single class, and continuously keep track of the active tear drops. The tick looks as follows:</p>
 
 						<p>1. We cycle through the hit data array and check, whether the element is currently active.</p>
 						<pre><code class="language-cpp">for (int i = 0; i &lt; _hitDataArray.Num(); i++)
@@ -341,7 +341,7 @@ struct FDisplayChangeSDFData
 		}
 	}</code></pre>
 
-						<p>Using a custom material expression in Unreal Engines Material Editor, we can then feed all of the parameters, and a custom  of the Material Parameter Collection into the following function:</p>
+						<p>Using a custom material expression in Unreal Engine's Material Editor, we can then feed all impact parameters from the Material Parameter Collection into the following function:</p>
 						<pre><code class="language-cpp">float result = 0.0f;
 
 float4 slots[16] = 
@@ -380,16 +380,16 @@ return saturate(result);</code></pre>
 						</p>
 
 						<h2>Game AI</h2>
-						<p>Currently, there are 3 types of enemies that the player can fight: The <strong>Shape Enemies</strong>, the <strong>Tangram Enemies</strong> and the <strong>Painting Enemies</strong> (a.k.a the "Boss" Enemies). All of these enemies will behave based on the use of Unreal Engines built in Behavior Tree system. I am writing in future tense, because currently only the Shape Enemies have a defined behavior, which I will touch on quite briefly in the following.</p>
+						<p>Currently, there are 3 types of enemies that the player can fight: The <strong>Shape Enemies</strong>, the <strong>Tangram Enemies</strong> and the <strong>Painting Enemies</strong> (a.k.a the "Boss" Enemies). All of these enemies will behave based on the use of Unreal Engine's built-in Behavior Tree system. I am writing in future tense, because currently only the Shape Enemies have a defined behavior, which I will touch on quite briefly in the following.</p>
 
 						<h3>Enemy AI Design</h3>
-						<p>The are currently <strong>3 types of Shape Enemies</strong> in the game: <strong>Triangle</strong>, <strong>Square</strong> and <strong>Circle</strong>. The Shape Enemies generally can be thought of as the "filler"-units of the game. The idea is that the Shape enemies should always be there, be easily predictable, but also for them to pose a challenge if the player is too slow with taking them out. All Shape Enemies have one major behavior that was designed to influence a different part of the players behaviour.</p>
+						<p>There are currently <strong>3 types of Shape Enemies</strong> in the game: <strong>Triangle</strong>, <strong>Square</strong> and <strong>Circle</strong>. The Shape Enemies generally can be thought of as the "filler"-units of the game. The idea is that the Shape enemies should always be there, be easily predictable, but also for them to pose a challenge if the player is too slow with taking them out. All Shape Enemies have one major behavior that was designed to influence a different part of the players behaviour.</p>
 						<p>The <strong>Circle</strong> is the simplest Shape Enemy. The idea is simply: "Make the player move around". The Circle constantly charges at the player, and it will explode on impact to deal a decent amount of damage.</p>
 						<p>The idea behind the <strong>Square</strong> is: Find a way for the player to pay attention while moving around. When the Square has found a shooting location, it will fire 3 slow moving projectiles in the general direction of the player, with 2 of them being offset to the left or right respectively. Because of the slow velocity, and the fact that multiple Squares can fire a projectile at the same time, the level could easily be flooded by Square projectiles that the player has to watch out for.</p>
-						<p>The <strong>Triangle</strong> have a more targeted approach from range; once more the idea is "keep the player moving". When a Triangle reaches their desire shooting location, they fire 3-4 rapid shoots in the direction of the player, but only if the path is clear. If not, the Triangle will reposition and try again.</p>
+						<p>The <strong>Triangle</strong> have a more targeted approach from range; once more the idea is "keep the player moving". When a Triangle reaches their desired shooting location, they fire 3-4 rapid shoots in the direction of the player, but only if the path is clear. If not, the Triangle will reposition and try again.</p>
 
 						<h3>Enemy Groups and Location Finding</h3>
-						<p>A problem I wanted to solve with the range attack enemies like Square and Triangle was the following: The enemies should dynamically choose good shooting locations, without me having to overengineer a dynamic system for them to find these locations. That's when I introduced something called <strong>Enemy Groups</strong> and <strong>Enemy Move Locations</strong>. Enemy group are of type <code class="inline-code">uint</code> and assigned by the enemies spawn position, and kept by the enemy throughout their entire lifecycle. I then place Enemy Move Locations throughout the level. These are locations that might be suited for a shooting position, such the edge of a platform or a nice elevated position. These Locations also store information about their occupation status within themselves. When choosing a new position to move to, which is done in a Task within the Behavior Tree, the enemy simply calls on the following method:</p>
+						<p>A problem I wanted to solve with the range attack enemies like Square and Triangle was the following: The enemies should dynamically choose good shooting locations, without me having to overengineer a dynamic system for them to find these locations. That's when I introduced something called <strong>Enemy Groups</strong> and <strong>Enemy Move Locations</strong>. Enemy groups are of type <code class="inline-code">uint</code> and assigned by the enemies spawn position, and kept by the enemy throughout their entire lifecycle. I then place Enemy Move Locations throughout the level. These are locations that might be suited for a shooting position, such the edge of a platform or a nice elevated position. These Locations also store information about their occupation status within themselves. When choosing a new position to move to, which is done in a Task within the Behavior Tree, the enemy simply calls on the following method:</p>
 
 						<pre><code class="language-cpp">AMyLocationActor* AMyEnemyMoveLocationContainer::SelectRandomLocationActorFromGroup(ACharacter* selectingCharacter,
 	uint8 enemyGroupIndex)
@@ -428,10 +428,10 @@ return saturate(result);</code></pre>
 }</code></pre>
 
 						<h2>Gameplay Ability System</h2>
-						<p>To manage abilities and attributes of all the characters in ABSTRACTICA, I have dipped my toes into using the Gameplay Ability System that is built into Unreal Engine. Every ability is a mix of Blueprints and C++, with the Math heavy logic generally moved into C++ for minor (not really necessary) performance gain.</p>
+						<p>To manage abilities and attributes of all the characters in ABSTRACTICA, I integrated the Gameplay Ability System built into Unreal Engine. Every ability is a mix of Blueprints and C++, with the Math heavy logic generally moved into C++ for minor (not really necessary) performance gain.</p>
 
 						<h2>Technologies Used</h2>
-						<div id="tech-rendered"></div>
+						<div id="tech-display"></div>
 
 						<h3>Screenshots</h3>
 						<div class="row screenshot-gallery">
@@ -487,7 +487,7 @@ return saturate(result);</code></pre>
 			<script src="../assets/js/main.js"></script>
 		<script src="../assets/js/tech-library.js"></script>
 		<script>
-			document.getElementById("tech-rendered").innerHTML = renderTechnologies([
+			document.getElementById("tech-display").innerHTML = renderTechnologies([
 				"Unreal Engine",
 				"C++",
 				"Blueprint",

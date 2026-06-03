@@ -37,12 +37,12 @@
 
 						<h2>Key Features</h2>
 						<ul>
-							<li>Solo-developed motorsport management game built in Unity 3D</li>
-							<li>Custom AI architecture combining <strong>Finite State Machines</strong> and <strong>Utility Based AI</strong></li>
-							<li>Driver Special Abilities system for strategic race advantages</li>
-							<li>Championship career mode with team management and progression</li>
-							<li>Custom visual shaders created with Unity Shader Graph</li>
-							<li>Immersive audio design implemented through <strong>Wwise</strong> integration</li>
+							<li>Solo-developed motorsport management game built in Unity 3D.</li>
+							<li>Custom AI architecture combining <strong>Finite State Machines</strong> and <strong>Utility Based AI</strong>.</li>
+							<li>Driver Special Abilities system for strategic race advantages.</li>
+							<li>Championship career mode with team management and progression.</li>
+							<li>Custom visual shaders created with Unity Shader Graph.</li>
+							<li>Immersive audio design implemented through <strong>Wwise</strong> integration.</li>
 						</ul>
 
 						<h2>Overview</h2>
@@ -57,7 +57,7 @@
 						<p>The AI system in Flat Spot is the core of the racing experience. Each driver on the track is controlled by an AI that makes decisions about racing lines, overtaking, defending, and when to use their Special Abilities. The AI is built on two main pillars: Finite State Machines for structured behavior flow, and Utility Based AI for dynamic decision-making within those states.</p>
 
 						<h3>Finite State Machines</h3>
-						<p>Each driver AI operates through two Finite State Machines that defines the high-level behavior during a race. The <code class="inline-code">Speed_FSM</code> is responsible for controling states like Acceleration, Braking, Holding and Pitlane. The <code class="inline-code">Line_FSM</code> on the other hand is responsible for the racing line the car takes, which in Flat Spot is defined through the 3 tracks Ideal, Outside and Inside. This structure ensures predictable and maintainable AI behavior while still allowing for dynamic responses to race conditions.</p>
+						<p>Each driver AI operates through two Finite State Machines that define the high-level behavior during a race. The <code class="inline-code">Speed_FSM</code> is responsible for controlling states like Acceleration, Braking, Holding and Pitlane. The <code class="inline-code">Line_FSM</code> on the other hand is responsible for the racing line the car takes, which in Flat Spot is defined through the three tracks: Ideal, Outside, and Inside. This structure ensures predictable and maintainable AI behavior while still allowing for dynamic responses to race conditions.</p>
 						<p>The State Machine has a reference to the current state, for which it executes the 3 main functions <code class="inline-code">OnStateEnter()</code>, <code class="inline-code">OnStateExit()</code> and <code class="inline-code">OnStateRunning()</code>:</p>
 
 <pre><code class="language-csharp">public class StateMachine : MonoBehaviour
@@ -96,7 +96,7 @@
 }
 </code></pre>
 
-						<p>All of the states in an implemented state machine are wrapped inside a partial class for maximum scope control of the states. An example state machine setup for a Speed FSM would look like this:</p>
+						<p>All of the states in an implemented state machine are wrapped inside a partial class to keep all states scoped within their machine. An example state machine setup for a Speed FSM would look like this:</p>
 
 						<pre><code class="language-csharp">public partial class Speed_RacingStateMachine : MarcimanStateMachine
 {
@@ -215,10 +215,10 @@
 }
 </code></pre>
 
-						<p>As mentioned, there are multiple State Machines in the game, all of which tie together to bring the cars in Flat Spot to life. I am proud to say that for my first commercial project, this game scaled quite well, especially thanks to the robust base architecture of the State Machine.</p>
+						<p>As mentioned, there are multiple State Machines in the game, all of which tie together to bring the cars in Flat Spot to life. For a first commercial project, the architecture proved scalable, especially thanks to the robust base of the State Machine.</p>
 
 						<h3>Utility Based AI</h3>
-						<p>In Flat Spot, the player takes the role of the manager. To have AI opponents in the game, I constructed a basic Utility-Based AI logic to create AI-managers of the other teams as your opponents.</p>
+						<p>In Flat Spot, the player takes the role of the manager. To have AI opponents in the game, I implemented a basic Utility-Based AI system to create AI-managers for opposing teams as the player's opponents. A more detailed breakdown of this system is coming soon.</p>
 
 
 
@@ -226,24 +226,16 @@
 						<p>As a management game, Flat Spot relies heavily on its user interface to communicate race information, team management options, and progression systems to the player. The UI was built entirely in Unity using the built-in UI system, with custom scripts handling data binding, state management, and dynamic updates during races.</p>
 						<p>Key UI systems include the race dashboard showing real-time positions and lap times, the team management screen for upgrading cars and training drivers, and the championship standings overview. Each panel is driven by dedicated controller scripts that pull data from the core game systems and update the display accordingly.</p>
 
-<pre><code class="language-csharp">public class ExampleClassName : MonoBehaviour
-{
-    // Implementation details
-}
-</code></pre>
+						<p><em>Code examples for this section are coming soon.</em></p>
 
 						<h2>Audio Implementation with Wwise</h2>
 						<p>The audio experience in Flat Spot was implemented using Audiokinetic's Wwise middleware. Wwise allows for dynamic and context-aware audio that responds to gameplay events, such as engine sounds changing with RPM, crowd reactions based on race position, and impactful sound effects when Special Abilities are activated.</p>
 						<p>The integration with Unity involves setting up Wwise events and RTPCs (Real-Time Parameter Controls) that are triggered from C# scripts. This approach separates audio design from code, allowing for iteration on sound design without needing to modify the game code.</p>
 
-<pre><code class="language-csharp">public class ExampleClassName : MonoBehaviour
-{
-    // Implementation details
-}
-</code></pre>
+						<p><em>Code examples for this section are coming soon.</em></p>
 
 						<h2>Technologies Used</h2>
-						<div id="tech-rendered"></div>
+						<div id="tech-display"></div>
 
 						<h2>Screenshots</h2>
 						<div class="row screenshot-gallery">
@@ -284,7 +276,7 @@
 			<script src="../assets/js/main.js"></script>
 		<script src="../assets/js/tech-library.js"></script>
 		<script>
-			document.getElementById("tech-rendered").innerHTML = renderTechnologies([
+			document.getElementById("tech-display").innerHTML = renderTechnologies([
 				"Unity 3D",
 				"C#",
 				"Blender",

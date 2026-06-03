@@ -1,0 +1,11 @@
+{
+  "name": "marcvonglahn-github-io",
+  "private": true,
+  "scripts": {
+    "build:css": "sass assets/sass/main.scss assets/css/main.css --style=expanded --no-source-map",
+    "watch:css": "sass assets/sass/main.scss assets/css/main.css --watch --style=expanded --no-source-map"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}
