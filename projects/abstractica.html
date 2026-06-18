@@ -428,7 +428,258 @@ return saturate(result);</code></pre>
 }</code></pre>
 
 						<h2>Gameplay Ability System</h2>
-						<p>To manage abilities and attributes of all the characters in ABSTRACTICA, I integrated the Gameplay Ability System built into Unreal Engine. Every ability is a mix of Blueprints and C++, with the Math heavy logic generally moved into C++ for minor (not really necessary) performance gain.</p>
+						<p>To manage abilities and attributes of all the characters in ABSTRACTICA, I integrated the Gameplay Ability System built into Unreal Engine. Every ability is a mix of Blueprints and C++, with the math heavy logic generally moved into C++ for minor (not really necessary) performance gain. To keep this consistent across the project, all of my abilities are built on top of a single shared base class, which I want to walk through below before showing how a concrete ability uses it.</p>
+
+						<h3>A Reusable Ability Base</h3>
+						<p>Almost every ability needs the same thing right away: a safe reference to the player character. Instead of re-deriving that reference in each ability, I centralized it in <code class="inline-code">UMarcimanGameplayAbility_Base</code>, which every concrete ability inherits from. It caches the character once and exposes the lookup as a <code class="inline-code">BlueprintNativeEvent</code>, so I can extend the setup in C++ while Blueprints can still trigger or override it.</p>
+
+<pre><code class="language-cpp">UCLASS()
+class ABSTRACTICA_API UMarcimanGameplayAbility_Base : public UGameplayAbility
+{
+	GENERATED_BODY()
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	AMyMainCharacter* mainCharacter;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AMyMainCharacter* SetupMainCharacterReference();
+	virtual AMyMainCharacter* SetupMainCharacterReference_Implementation();
+};
+</code></pre>
+
+						<p>The implementation resolves the reference lazily and only once. It first tries the avatar actor provided by the ability's actor info, and falls back to the first player character if that is not available. Because the result is cached in <code class="inline-code">mainCharacter</code>, repeated calls are effectively free.</p>
+
+<pre><code class="language-cpp">AMyMainCharacter* UMarcimanGameplayAbility_Base::SetupMainCharacterReference_Implementation()
+{
+	if (mainCharacter == nullptr)
+	{
+		mainCharacter = Cast&lt;AMyMainCharacter>(GetAvatarActorFromActorInfo());
+
+		if (mainCharacter == nullptr)
+		{
+			mainCharacter = Cast&lt;AMyMainCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+		}
+	}
+
+	return mainCharacter;
+}
+</code></pre>
+
+						<h3>The Display Change Ability</h3>
+
+						<p>
+							<div class="col-6">
+								<a class="image fit narrow"><img src="../images/marciman/abstractica/display-change-cube-attack-demo.gif" alt="" /></a>
+							</div>
+						</p>
+
+						<p>The most involved ability I built on this base is <code class="inline-code">UMyGameplayAbility_DisplayChangeTrigger</code>. It spawns a swarm of <code class="inline-code">AMyDisplayChangeCube</code> actors, spreads them out around the player, waits for all of them to be ready, then triggers the attack and pulls them back in. The interesting part, from a GAS perspective, is that a single ability orchestrates the entire lifecycle of many independent actors and keeps them in sync.</p>
+
+						<p>This ability extends the base setup. It calls <code class="inline-code">Super</code> to resolve the player reference, then resolves the dependencies it needs to do its job and subscribes to the event that tells it when the attack is finished.</p>
+
+<pre><code class="language-cpp">AMyMainCharacter* UMyGameplayAbility_DisplayChangeTrigger::SetupMainCharacterReference_Implementation()
+{
+	Super::SetupMainCharacterReference_Implementation();
+
+	MyManagerRegistryHandler::RequestManager&lt;AMyGeneralCombatManager>(
+		this->mainCharacter, [this](AMyGeneralCombatManager* CombatManager)
+		{
+			if (CombatManager)
+			{
+				myCombatManager = CombatManager;
+
+				myCombatManager->OnDisplayChangeAttackFinished
+				               .AddDynamic(this, &amp;UMyGameplayAbility_DisplayChangeTrigger::TriggerEndAbility);
+			}
+		});
+
+	MyManagerRegistryHandler::RequestManager&lt;AMyGeneralMaterialManager>(
+		this->mainCharacter, [this](AMyGeneralMaterialManager* MaterialManager)
+		{
+			if (MaterialManager)
+			{
+				myMaterialManager = MaterialManager;
+			}
+		});
+
+	return mainCharacter;
+}
+</code></pre>
+
+						<h3>Spawning Cubes from a GAS Attribute</h3>
+						<p>How many cubes spawn is not hardcoded. The ability reads <code class="inline-code">DisplayChangeCubesToSpawn</code> from the player's <code class="inline-code">UMyMainCharacterAttributeSet</code>, which is a <strong>GAS attribute</strong>. This means the ability scales with the player's progression without me touching the spawning code. Each cube is then given an orbit position at a random distance and direction in front of the player, ground-traced down so it floats at a fixed height, and bundled together with its start and end location in an <code class="inline-code">FDisplayCubeContainer</code> struct. Along the way I accumulate an average spawn location, which is later used as the focal point for the pull-in.</p>
+
+<pre><code class="language-cpp">USTRUCT(BlueprintType)
+struct ABSTRACTICA_API FDisplayCubeContainer
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AMyDisplayChangeCube* Cube;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector AnimationStartLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector AnimationEndLocation;
+};
+</code></pre>
+
+<pre><code class="language-cpp">void UMyGameplayAbility_DisplayChangeTrigger::SpawnCubes()
+{
+	const FVector mainCharLocation = mainCharacter->GetActorLocation();
+	const FVector mainCharForwardDirection = mainCharacter->GetActorForwardVector();
+	const FVector mainCharRightDirection = mainCharacter->GetActorRightVector();
+
+	const UMyMainCharacterAttributeSet* EnemyAttributes =
+		mainCharacter->GetAbilitySystemComponent()->GetSet&lt;UMyMainCharacterAttributeSet>();
+	_cubesAmount = EnemyAttributes->GetDisplayChangeCubesToSpawn();
+
+	bool averageLocationInitSet = false;
+
+	for (int i = 0; i &lt; _cubesAmount; i++)
+	{
+		const float playerOrbitDistance = FMath::RandRange(minCubeSpawnDistanceRange, maxCubeSpawnDistanceRange);
+
+		const float xValue = FMath::RandRange(-1.0f, 1.0f);
+		const float yValue = FMath::RandRange(0.5f, 1.0f);
+
+		FVector direction = (mainCharForwardDirection * yValue) + (mainCharRightDirection * xValue);
+		direction.Normalize();
+
+		FVector finalCubeLocation = mainCharLocation + direction * playerOrbitDistance;
+
+		FHitResult hitResult;
+
+		if (const bool hit = UKismetSystemLibrary::SphereTraceSingle(
+				this,
+				FVector(finalCubeLocation.X, finalCubeLocation.Y, 5000.0f),
+				FVector(finalCubeLocation.X, finalCubeLocation.Y, -5),
+				5.0f,
+				TraceTypeQuery3,
+				false,
+				TArray&lt;AActor*>(),
+				EDrawDebugTrace::None,
+				hitResult,
+				true
+			);
+			hit)
+		{
+			finalCubeLocation.Z = hitResult.Location.Z + cubeFloatHeight;
+		}
+
+		if (!averageLocationInitSet)
+		{
+			averageCubeSpawnLocation = finalCubeLocation;
+			averageLocationInitSet = true;
+		}
+		else
+		{
+			averageCubeSpawnLocation += finalCubeLocation;
+		}
+
+		AMyDisplayChangeCube* displayChangeCube = GetWorld()->SpawnActor&lt;AMyDisplayChangeCube>(
+			displayCubeBlueprintClass,
+			mainCharLocation,
+			FRotator::ZeroRotator);
+
+		displayChangeCube->SetCubeInstanceIndex(i);
+
+		FDisplayCubeContainer container = FDisplayCubeContainer(displayChangeCube, mainCharLocation, finalCubeLocation);
+
+		displayCubes.Add(container);
+
+		container.Cube->OnCubeSpreadOutFinished.
+		          AddDynamic(this, &amp;UMyGameplayAbility_DisplayChangeTrigger::OnCubeSpreadOutDone);
+	}
+
+	averageCubeSpawnLocation /= _cubesAmount;
+}
+</code></pre>
+
+						<h3>Coordinating Many Actors with Delegates</h3>
+						<p>This is the part I am most happy with. Once the cubes exist, I do not micromanage each one individually; instead, every cube reports back to the ability through delegates, and the ability counts completions against the total cube count. The lifecycle only advances once <strong>every</strong> cube has reached the current stage. Kicking the cubes off and subscribing to the "fully ready" callback is straightforward.</p>
+
+<pre><code class="language-cpp">void UMyGameplayAbility_DisplayChangeTrigger::StartSpreadOutCubes()
+{
+	for (int i = 0; i &lt; displayCubes.Num(); i++)
+	{
+		displayCubes[i].Cube->StartSpreadOutAnimation(displayCubes[i].AnimationStartLocation,
+		                                              displayCubes[i].AnimationEndLocation);
+	}
+}
+
+void UMyGameplayAbility_DisplayChangeTrigger::SetupCubes()
+{
+	for (int i = 0; i &lt; displayCubes.Num(); i++)
+	{
+		displayCubes[i].Cube->OnCubeFullyReady.
+		                AddDynamic(this, &amp;UMyGameplayAbility_DisplayChangeTrigger::OnCubeFullyReady);
+	}
+}
+</code></pre>
+
+						<p>The two callbacks below are where the synchronization happens. Each one increments a counter and, once that counter reaches <code class="inline-code">_cubesAmount</code>, advances the ability to the next stage. When all cubes have spread out, I fire <code class="inline-code">OnAllCubesSpreadOut</code>; when all cubes are fully ready, I fire <code class="inline-code">TriggerDisplayChangeAttack</code> and start the pull-in for every cube. Both of those triggers are <code class="inline-code">BlueprintImplementableEvent</code>s, which is the deliberate split I use throughout the project: C++ owns the math and the orchestration, while <strong>Blueprint</strong> owns the actual VFX and timelines that play at each milestone.</p>
+
+						<p>
+							<div class="col-6">
+								<a class="image fit narrow"><img src="../images/marciman/abstractica/display-change-trigger-blueprint-example_1.png" alt="" /></a>
+							</div>
+						</p>
+
+<pre><code class="language-cpp">void UMyGameplayAbility_DisplayChangeTrigger::OnCubeSpreadOutDone(AMyDisplayChangeCube* Cube)
+{
+	_cubesSpreadOutCounter++;
+
+	if (_cubesSpreadOutCounter >= _cubesAmount)
+	{
+		OnAllCubesSpreadOut();
+
+		_cubesFullyReadyCounter = 0;
+	}
+}
+
+void UMyGameplayAbility_DisplayChangeTrigger::OnCubeFullyReady(AMyDisplayChangeCube* Cube)
+{
+	_cubesFullyReadyCounter++;
+
+	if (_cubesFullyReadyCounter >= _cubesAmount)
+	{
+		TriggerDisplayChangeAttack();
+
+		for (const FDisplayCubeContainer Container : displayCubes)
+		{
+			Container.Cube->StartPullInAnimation(pullInDuration, Container.AnimationEndLocation,
+			                                     averageCubeSpawnLocation);
+		}
+
+		_cubesFullyReadyCounter = 0;
+		_cubesAmount = 0;
+	}
+}
+</code></pre>
+
+						<h3>Ending the Ability Cleanly</h3>
+						<p>The ability subscribed to the combat manager's <code class="inline-code">OnDisplayChangeAttackFinished</code> event during setup. When that event fires, <code class="inline-code">TriggerEndAbility</code> calls <code class="inline-code">EndAbility</code> and then destroys and clears all of the spawned cubes, so no actors leak between activations of the ability.</p>
+
+<pre><code class="language-cpp">void UMyGameplayAbility_DisplayChangeTrigger::TriggerEndAbility(AMyGeneralCombatManager* cManager)
+{
+	EndAbility(
+		CurrentSpecHandle,
+		CurrentActorInfo,
+		CurrentActivationInfo,
+		true,
+		false);
+
+	for (int i = 0; i &lt; displayCubes.Num(); i++)
+	{
+		displayCubes[i].Cube->Destroy();
+	}
+
+	displayCubes.Empty();
+}
+</code></pre>
 
 						<h2>Technologies Used</h2>
 						<div id="tech-display"></div>
